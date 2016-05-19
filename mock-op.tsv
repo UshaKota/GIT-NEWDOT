@@ -1,0 +1,7 @@
+ID	AgeC	GenderC	freq.pur	freq.et	fruit
+1234	25-30	female	NA	onceinamonth	pears
+1234	25-30	female	onceinaweek	onceinaweek	apples
+1235	31+	male	everyday	everyday	apples
+1235	31+	male	everyday	everyday	pears
+1236	25-30	female	NA	onceinaweek	apples
+1237	20-24	female	onceinaweek	onceinaweek	pears

@@ -1,0 +1,16 @@
+Posting the visualizations of Open-ended-responses (free text input columns in DOT data set) for "In What other ways do you use devices for work"
+
+I used STM (structured Topic Modeling) package functions in R to process these free text responses.
+
+The reason I chose to use STM was, the in-built functions allow a covariate to be associated with topic modeling and have the abilities to display the effects of covariate on topic models
+
+Since I wanted to study the Age category (This is a covariate)  that might  have an effect on the content of a free text response.
+
+STM allows only 2 level covariates.. Hence I had to filter the response texts  by AgeC variable (Age.Range > 2). Which means, I filter to analyse Age effect of content between 25-30 and 31+ on how they "tend" to use devices for work
+
+I'm attaching 4 files.
+
+    The Wordcloud of all the vocabulary (as processed by STM library)
+    The distribution of the vocabulary into Topics
+    The effect of Age on 3 topics
+    Perspectives of content varying by Age Category

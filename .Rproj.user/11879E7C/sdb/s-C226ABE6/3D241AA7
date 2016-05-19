@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1461157678975.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3D241AA7",
+    "lastKnownWriteTime" : 31244048835477601,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "kr3k2hdlpr",
+        "caption" : "one.no.buy.eat.case",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=one.no.buy.eat.case&cache_key=kr3k2hdlpr",
+        "displayedObservations" : 6,
+        "environment" : "",
+        "object" : "one.no.buy.eat.case",
+        "totalObservations" : 6,
+        "variables" : 7
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

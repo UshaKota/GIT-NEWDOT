@@ -1,0 +1,6 @@
+ID,AgeC,GenderC,doyoubuyappleseveryday,doyoubuyapplesonceinaweek,doyoubuyapplesonceinamonth,doyoubuypearseveryday,doyoubuypearsonceinaweek,doyoubuypearssonceinamonth,doyoueatappleseveryday,doyoueatapplesonceinaweek,doyoueatapplesonceinamonth,doyoueatpearseveryday,doyoueatpearsonceinaweek,doyoueatpearsonceinamonth
+1234,25-30,female,,1,,,,,,1,,,,1
+1235,31+,male,1,,,,,,,,,1,,
+1236,25-30,female,,,,,,,,1,,,,
+1237,20-24,female,,,,,1,,,,,,1,
+1238,25-30,male,,,,1,,,,,1,,,

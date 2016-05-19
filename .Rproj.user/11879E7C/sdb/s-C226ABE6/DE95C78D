@@ -1,0 +1,18 @@
+{
+    "contents" : "\nlibrary(data.table)\nlibrary(plyr)\n\nrepro.dt <- data.table(read.csv(\"repro-exmpl.csv\", header=T,stringsAsFactors = F))\n\n#create an aux. fruits table\nfruits<-matrix(c(\"apples\", \"pears\"), ncol = 1, byrow=T)\nfruit<-as.table(fruits)\n\n#create an aux. frequency table\nfreq.levels<- matrix(c(\"everyday\", \"onceinaweek\", \"onceinamonth\"),ncol = 1, byrow = T)\n\nfreq<-as.table(freq.levels)\n\n#melt for buying frequencies\nid.cols.buy.m <-names(repro.dt)[-grep(\"buy\",names(repro.dt))]\n\n\nrepro.buy.m<-data.table(melt(repro.dt, id.vars = id.cols.buy.m, measure.vars = grep(\"buy\",names(repro.dt),value=T ),\n                                         variable.name = \"buy.fruit\", value.name = \"buy.freq\"))\n\n\n\nrepro.buy.m$fruit = apply(repro.buy.m, 1, function(u){\n  bool = sapply(fruit[,1], function(x) grepl(x, u[['buy.fruit']]))\n  if(any(bool)) fruit[bool] else NA\n})\n\n# \n# #add fruit and buy freq column\n# \nrepro.buy.m$freq.pur= apply(repro.buy.m, 1, function(u){\n  bool = sapply(freq.levels[,1], function(x) grepl(x, u[['buy.fruit']]))\n  if(!is.na(u[['buy.freq']])) freq.levels[bool] else NA\n})\n\n\nid.cols.buy.m <- colnames(repro.buy.m)[-grep(\"buy\",names(repro.buy.m))]\n\nf <- as.formula(paste(paste(id.cols.buy.m, collapse = \" + \"), \"~ buy.fruit\"))\n\nrepro.buy.c<-data.table(dcast(data = repro.buy.m, f, value.var = \"buy.freq\",function(x) length(unique(x))))\nrepro.buy.c<-repro.buy.c[, which(grepl(\"buy\", colnames(repro.buy.c))):=NULL]\n#get a unique case\n\none.no.buy.case<-unique(repro.buy.c[ID == 1236,])\n\n#melt for eating frequencies\n\nid.cols.eat <-colnames(repro.buy.c)[-grep(\"eat\",names(repro.buy.c))]\n\n\nrepro.eat.m<-data.table(melt(repro.buy.c, id.vars = id.cols.eat, measure.vars = grep(\"eat\",names(repro.buy.c),value=T ),\n                           variable.name = \"eat.fruit\", value.name = \"eat.freq\"))\n\n\n\nrepro.eat.m$fruit.et = apply(repro.eat.m, 1, function(u){\n  bool = sapply(fruit[,1], function(x) grepl(x, u[['eat.fruit']]))\n  if(any(bool)) fruit[bool] else NA\n})\n\n# \n# #add fruit and buy freq column\n# \nrepro.eat.m$freq.et= apply(repro.eat.m, 1, function(u){\n  bool = sapply(freq.levels[,1], function(x) grepl(x, u[['eat.fruit']]))\n  if(!is.na(u[['eat.freq']])) freq.levels[bool] else NA\n})\n\nid.cols.eat.m <- colnames(repro.eat.m)[-grep(\"eat.fruit\",names(repro.eat.m))]\n\nf <- as.formula(paste(paste(id.cols.eat.m, collapse = \" + \"), \"~ eat.fruit\"))\n\nrepro.buy.eat.c<-data.table(dcast(data = repro.eat.m, f, value.var = \"eat.freq\",function(x) length(unique(x))))\nrepro.buy.eat.c<-repro.buy.eat.c[, which(grepl(\"eat\", colnames(repro.buy.eat.c))):=NULL]\n\none.no.buy.eat.case<-unique(repro.buy.eat.c[ID == 1236,])\n\n#melt again\n\nid.cols.buy.eat.m<-colnames(repro.buy.eat.c)[-grep(\"fruit|fruit.et\",names(repro.buy.eat.c))]\n\nrepro.buy.eat.m<-data.table(melt(repro.buy.eat.c, id.vars = id.cols.buy.eat.m, measure.vars = grep(\"fruit|fruit.et\",names(repro.buy.eat.c),value=T ),\n                             variable.name = \"fruit.final\", value.name = \"fruit\"))\n\n#add the merged column fruit with a condition to set either freq.pur or freq.et\n\n\n",
+    "created" : 1461136231169.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "603028309",
+    "id" : "DE95C78D",
+    "lastKnownWriteTime" : 1461157668,
+    "path" : "C:/Users/Usha/RAssignments/DOT/NewDOT/repro-so.R",
+    "project_path" : "repro-so.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : true,
+    "type" : "r_source"
+}

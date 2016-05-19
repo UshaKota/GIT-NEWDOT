@@ -1,0 +1,18 @@
+Histograms on raw counts
+nature of distribution
+Contingency tables
+Ordering of frequency levels
+Box plots
+scatterplot of counts
+# In what ways are youth in these countries using technology and social media to support or engage in formal work? Informal work?
+# In what ways are youth in these countries using technology and social media for learning?
+Merge data sets for frequency counts
+expected counts of each data set
+residuals - deviations in the residuals
+strong or weak associations
+Adjusted r/r2 for measure of strength of associations by proportions, odds and odds ratio
+TypeI,TypeII errors?
+Correspondence analysis
+
+
+ Needed <- c("tm", "SnowballCC", "wordcloud", "biclust", "cluster", "igraph")

@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1461156780419.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "802C51A0",
+    "lastKnownWriteTime" : 31244048835477601,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "lcs2yuwyxt",
+        "caption" : "repro.dt",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=repro.dt&cache_key=lcs2yuwyxt",
+        "displayedObservations" : "4",
+        "environment" : "",
+        "object" : "repro.dt",
+        "totalObservations" : "4",
+        "variables" : "15"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
