@@ -1,0 +1,1004 @@
+---
+title: "DOT Survey Data Analysis"
+author: "UshaKiran.Kota"
+date: "May 23, 2016"
+output: 
+  word_document: 
+    fig_caption: yes
+    highlight: pygments
+    
+
+---
+
+# Coursolve/Need230  : DOT Data Analysis
+
+
+## Part 1 -Introduction
+
+ref://https://www.dotrust.org/about/
+
+Digital Opportunity Trust (DOT) is a leading international social enterprise headquartered in Ottawa, Canada with local operations around the globe. 
+DOT mobilizes youth the talent and energy helping them to develop both an entrepreneurial spirit and technology and business skills that will last a lifetime. Young people are encouraged to become leaders of change as they facilitate technology, business, and entrepreneurial learning experiences to people in their own communities.
+
+DOT's unique youth-led programs empower people living in communities that are developing, in transition, or under stress with the confidence to use technology for entrepreneurial, community, educational, and personal development. 
+
+_In September 2015, twenty youth from Kenya, Rwanda, Ethiopia, Uganda, Tanzania, Lebanon, and Indigenous Canada embarked on a project to survey their peers about how they are using technology and social media for work, income, learning, leadership, and employment. 580 youth from urban, peri-urban, and rural areas were surveyed through face-to-face qualitative and quantitative interviews.
+
+The result of this survey is a raw dataset of 580 responses and more than 1600 variables , 
+
+Coursolve/Need230 is a short term project to analyse:
+
+How are youth in Kenya, Rwanda, Ethiopia, Uganda, Tanzania, Lebanon, and Indigenous Canada  using technology and social media for work, income, learning, leadership, and employment?
+
+DOT provided the team with a Raw Survey responses.xlsx as an input data for the exploratory Analysis and expects to find answers for some or all of the below questions from the results of Need230
+
+### Document Purpose
+
+The purpose of this document is describe one of the several methods of how to handle dataset of large number of categorical variables to reduce the dimensions of the data set for ease of exploration for research questions
+
+### Need230/DOT Data Analysis - Research Questions
+1.How does access to technology vary by gender?
+
+2.How does use of social media for work, income, learning, leadership, and employment vary by gender?
+
+3.In what ways are youth in these countries using technology and social media to support or engage in formal work? Informal work?
+
+4.In what ways are youth in these countries using technology and social media to supplement income, or to support primary incomes?
+
+5.In what ways are youth in these countries using technology and social media for learning?
+
+6.What barriers and incentives to online learning are there among the surveyed youth?
+
+7.How are young people positioning themselves as leaders in their communities or among peer groups using social media and technology?
+
+8.How are young people gaining and/or participating in formal or informal employment using technology and social media?
+
+
+## Justification 
+DOT intends to learn more about how our key stakeholder group (youth in the identified countries) are benefitting from technology and social media in the areas of employment, entrepreneurship, learning, and leadership.
+
+DOT will use the results of Need230 to inform program and project design, as well as implementation strategies. 
+
+This document is intended to present analysis for Questions 1, 3, 5 from the above list of research questions
+
+### 1.Survey Data Insights
+
+This section summarises the understanding of Survey Data
+
+
+####  1.Populations and samples
+The target population in the DOT survey report is youth of different age categories who belong to Canada , Sub sahara countries of Africa and Lebanon, well stratifies by Age, Gender and Location 
+The data consists of 568 respondents randomly sampled from the target locations and by Age, Gender forming a well representaion of stratified sampled data. Hence it is reasonable to assume that the estimates on the sample cases will be unbiased
+DOT research team conducted a prospective observational study,  with a cohort of 568 individuals and responses collected over 1500 features. Hence it is intended to check for any evidence of association between the features over which the  data was collected
+
+Each row of data represents a case of 1539 features. The total number of cases are 568
+DOT Data is a collection of responses over features that are dichotmous ( binary, nominal and categorical (multi-level responses)) type, collected from each respondent.
+Data also includes variable that elicit  open-ended responses to questions from the researcher
+#### 3. Respondent Demographics View
+
+
+#### 2.Data Handling
+
+This section describes how the data is organised for exploratory and inferential analysis.
+
+For a majority of categorical multi-level variables, Data is organanized to individual subsets for each set of explanatory and response variables. Cross tabulation of multi-way (minimum of 3 dimensions) is a chosen as a perferred method to study any association between the chosen features
+
+Data cleaning up process comprised of the foll:
+
+1. creating segmented data sets for variables of analysis 
+2. shortening variables names by length and or replace for convenient handling with the software
+3. reshaping the data to group the appropriate variable for each survey question within the chosen research Questions for analysis 
+
+###
+
+```{r, echo=FALSE, load_library, echo=F, warning=F, message=F}
+library(data.table)
+library(ggplot2)
+library(plyr)
+library(stringr)
+library(stringi)
+library(tidyr)
+library(reshape2)
+library(knitr)
+library(RColorBrewer)
+library(vcd)
+library(lattice)
+library(MASS)
+library(FactoMineR)
+
+
+
+```
+
+```{r, read_data_cache, echo=F, warning=F, message=F,results='hide'}
+
+
+filename = "dotnewData.RDS"
+
+
+if(file.exists(filename)){
+  print("fileexists")
+  #create dot survey response data set from the RDS
+  dotsr<-readRDS(filename)
+  
+} else{
+  
+  
+dotsr <- data.table(read.csv("DOTCleanedData1.csv",skip = 1,
+                             stringsAsFactors = F))
+  saveRDS(dotsr, "dotnewData.RDS")
+  
+}
+
+
+#to have an idea check how many vairables and type of variables the DOT data has
+dot.var.dt<-data.table(var.name = colnames(dotsr),var.type = sapply(dotsr,class))
+
+#*****************************************************
+#How does access to technology vary by gender?
+#What devices do you have access to?
+#How often do you actually use these devices?
+#Where do you most commonly use the devices you have access to?
+#How much access to do you have to the Internet?
+#How often do you actually use the Internet?
+#Where do you most commonly use the Internet?
+#What digital services/tools do you have access to?
+#Where do you most commonly use digital services?
+
+#****************************************************
+
+#rename the X column to ID
+rename(dotsr,replace = c("X" = "ID"))
+
+#remove NAs in mandatory columns
+dotsr<-dotsr[rowSums(is.na(dotsr[,1:21, with = F]))==0,,drop =F]
+
+
+```
+```{r, survey_data, cache=F,echo=F,warning=F}
+
+print("Glipmse of Survey Data")
+print(head(dotsr[1:5,1:21,with = F]))
+
+
+```
+#### 3.Exploratory View of Demographics
+
+```{r, DOT_demographics, cache=F,fig.height=8, fig.width=14,echo=F,results = 'hold',warning=F}
+
+make.plot.dt<-function(main.dt, plot.var){
+  plotting.dt<-main.dt[, list(Frequency = length(ID)),
+                       by = c( "AgeC","GenderC",plot.var)]
+  return (plotting.dt)
+  
+}
+
+make.plot.freq.dt<-function(plotting.dt, freq.var1,freq.var2) {
+  Frequency<-plotting.dt$Frequency
+  freq.var1<-freq.var1
+  freq.var2<-freq.var2
+  
+  plot.freq.dt <- ddply(plotting.dt,.(plotting.dt[[freq.var1]],
+                                      plotting.dt[[freq.var2]]), 
+                        transform, pos = cumsum(Frequency) - (0.5*Frequency))
+  return (plot.freq.dt)
+  
+  
+}
+
+plot.data<-function(main.dt,facet.var,freq.var2, titl.str) {
+  plotting.dt<-make.plot.dt(main.dt,facet.var)
+  plot.freq.dt<-make.plot.freq.dt(plotting.dt, facet.var,freq.var2)
+  
+  gg<-ggplot(plot.freq.dt, aes(x=plot.freq.dt$AgeC,
+                               y= plot.freq.dt$Frequency )) +
+    
+    geom_bar(aes(fill = plot.freq.dt$GenderC), stat="identity") +
+    
+    geom_text(aes(label = ifelse(plot.freq.dt$Frequency >= 5,
+                                 plot.freq.dt$Frequency,""), 
+                                  y = pos), size = 5) +
+    facet_wrap(reformulate(facet.var),scales = "free_y" ) + 
+    theme(strip.text.x = element_text(size=16)) +
+    theme(axis.text = element_text(colour = "blue",size = 16)) + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+    ggtitle(titl.str) + 
+    
+    theme(plot.title = element_text(size = rel(3), colour = "blue"),
+          axis.title.x = element_text(color="blue", size=20, face="bold"),
+          axis.title.y = element_text(color="blue", size=20, face="bold")) +
+    scale_fill_brewer(palette="Accent") + 
+    theme(legend.text = element_text(size = 16, colour = "blue")) +
+    labs(x = "Age Category", y = "Respondents",size = 20, color = "blue")
+  
+  print(gg)
+  
+}
+plot.data(dotsr, "LocationRespondent", "AgeC", 
+          "Survey Demographics by Location")
+
+plot.data(dotsr, "GeographyC", "AgeC", 
+          "Survey Demographics by Geography")
+
+plot.data(dotsr, "EducationC", "AgeC", 
+          "Survey Demographics by Education")
+
+plot.data(dotsr, "EmploymentC", "AgeC", 
+          "Survey Demographics by Employment")
+
+plot.data(dotsr, "OccupationC", "AgeC", 
+          "Survey Demographics by Occupation")
+
+
+dot.tab1<-table(dotsr$GenderC,dotsr$AgeC)
+dot.tab2<-table(dotsr$GenderC,dotsr$EducationC)
+dot.tab3<-table(dotsr$GenderC,dotsr$EmploymentC)
+dot.tab4<-table(dotsr$GenderC,dotsr$OccupationC)
+dot.tab5<-table(dotsr$OccupationC,dotsr$EmploymentC)
+dot.tab6<-table(dotsr$GeographyC,dotsr$EducationC)
+dot.tab7<-table(dotsr$GeographyC,dotsr$EmploymentC)
+
+
+print("2-way Contingency table: varying by Gender and Age")
+prop.table(dot.tab1,1)
+
+print("2-way Contingency table: varying by Gender and Education")
+prop.table(dot.tab2,1)
+
+print("2-way Contingency table: varying by Gender and Employment status")
+prop.table(dot.tab3,1)
+
+print("2-way Contingency table: varying by Gender and OccupationC")
+prop.table(dot.tab4,1)
+
+prop.table(dot.tab6,2)
+
+prop.table(dot.tab7,2)
+
+
+```
+#### 5.Executive Summary
+
+As part of the need 230, DOT sought response to atleast 3 of research questions. Each of these 3 research questions is a group of questions that elicit response over technology access and use related within social environment of target population.
+
+This section describes the approach for data analysis and Exploratory analyses and Statistical analyses that will be peformed on the DOT survey Data.
+
+The purpose of the research is to provide useful insights about the data with the help of Exploratory views, Qualitative comments and results of Inferential analysis on selected data sets
+Apart from the demographics of the respondents, DOT survey is a collection of responses for survey Questions related to access and use of technology for the activities that the youth are associated with . Response variables are related to the access and use of technology by youth within their living (to change this word) context.
+
+Basic assumptions about conditions of indenpendence and randomness within group are made while analysing the data, Since the data are nominal categorical in nature,  it will be appropriate to use "point estimates", and ranges for summary statistics.
+
+Exploratory methods such as stacked bar plots, mosaic plots and contingency tables will be used visualize the data and any associations within groups or between groups of data.
+
+Since the sample sizes with multi-level responses are large enough, we can test for independence between the Gender of respondents and their response for technology choice using a **Pearson's chi-squared test**, which will be  performed on selected data sets for the sub group of questions.
+Regression analysis is also performed on selected data sets to check the linear-log linear variability among the response/explanatory variables
+
+Research Questions 3 and 5 elicit response in the form of  "open ended text". Exploratory views such as Wordclouds and Latent Topics will be included as part of the text analysis process in these cases.  Document to Topic associations will be illustrated with suitable plots that provide insights into the latent topics  discussed by the respondents
+
+All the plots and statistical test results in this document are performed using R statistical Software programming language.
+
+
+### Research Question I
+
+Research Question I is **"How does access to technology vary by Gender"**
+THis question has response data within collection of following sub set of questions :
+
+**What devices do you have access to?**
+**How often do you actually use these devices?**
+
+**Where do you most commonly use the devices you have access to?**
+
+**How much access to do you have to the Internet?**
+
+**How often do you actually use the Internet?**
+
+**Where do you most commonly use the Internet?**
+
+**What digital services/tools do you have access to?**
+
+**Where do you most commonly use digital services?**
+#
+
+The Question I seeks to answer in the form of investigation for any significant association between Gender of the respondents and access to technology grouped  under :
+
+1. Access to electronic devices such as smartphones, tablets, laptops etc, their use frequencies, and location of use 
+
+2. Access to Internet, Use frequency of internet by the respondent on a device and location of use
+
+3. Access to any digital services via internet access on the devices that they use.
+
+```{r, echo=FALSE, get_rel_cols, warning=F,results="hide"}
+
+#Get only relevant columns from the dot survey response data set
+dot.tech.gender.dt <-
+  subset(
+    dotsr, select = grepl(
+      "How.often.do.you.actually.use.the.Internet|ID|Gender|Age|Location|Geo|What.devices|use.these.devices|most.commonly.use.the.devices|access.to.do.you.have.to.the.Internet|commonly.use.the.Internet|What.digital.services.tools.do.you.have.access.to|commonly.use.digital", names(dotsr)
+    )
+  )
+
+#create factor variables for devices
+devices <-
+  matrix(
+    c(
+      "Desktopcomputer", "Laptop", "Tablet", "Smartphone",
+      "Featurerichmobilephone","Basicmobilephone"
+    ),
+    ncol = 1, byrow = T
+  )
+
+device <- as.table(devices)
+
+
+freq.levels <- matrix(
+  c(
+    "Anytime","Multipletimes", "Onceaday",
+    "Everyfewdays", "Onceaweek","Onceeveryfewweeks",
+    "Onceamonth","Lessthanonceamonth","Never","never",
+    "Idontknow"
+  ),
+  ncol = 1, byrow = T
+)
+
+freq <- as.table(freq.levels)
+
+```
+```{r, echo=FALSE, warning=F,reduce_names,results = "hold"}
+names(dot.tech.gender.dt) <-
+  gsub("\\.", "", names(dot.tech.gender.dt))
+
+names(dot.tech.gender.dt) <-
+  gsub("\\Agerange", "", names(dot.tech.gender.dt))
+
+names(dot.tech.gender.dt) <-
+  gsub("Whatdevicesdoyouhaveaccessto", "acc.dev", names(dot.tech.gender.dt))
+
+names(dot.tech.gender.dt) <-
+  gsub(
+    "\\Howoftendoyouactuallyusethesedevices", "dev.use.freq.", names(dot.tech.gender.dt)
+  )
+
+names(dot.tech.gender.dt) <-
+  gsub(
+    "Wheredoyoumostcommonlyusethedevicesyouhaveaccessto", "use.loc.device.", names(dot.tech.gender.dt)
+  )
+
+#How much access to do you have to the Internet
+names(dot.tech.gender.dt) <-
+  gsub(
+    "HowmuchaccesstodoyouhavetotheInternet", "acc.to.Internet.", names(dot.tech.gender.dt)
+  )
+
+#HowoftendoyouactuallyusetheInternet
+# HowoftendoyouactuallyusetheInternet
+names(dot.tech.gender.dt) <-
+  gsub("HowoftendoyouactuallyusetheInternet", "use.Internet", names(dot.tech.gender.dt))
+
+#Where do you most commonly use the Internet
+names(dot.tech.gender.dt) <-
+  gsub(
+    "WheredoyoumostcommonlyusetheInternet", "use.loc.Internet.", names(dot.tech.gender.dt)
+  )
+
+##What digital services
+names(dot.tech.gender.dt) <-
+  gsub("Whatdigitalservices", "acc.digi.tools.", names(dot.tech.gender.dt))
+
+#Where do you most commonly use digital services
+names(dot.tech.gender.dt) <-
+  gsub(
+    "Wheredoyoumostcommonlyusedigitalservices", "loc.use.digi.tools.", names(dot.tech.gender.dt)
+  )
+
+#check what variables have been chosen for the research Q
+#to have an idea check how many vairables and type of variables the DOT data has
+dot.tech.gender.var.dt <-
+  data.table(
+    var.name = colnames(dot.tech.gender.dt),var.type = sapply(dot.tech.gender.dt,class)
+  )
+
+#remove NA values in all mandatory columns.Age, Gender, Location,columns 1:9
+dot.tech.gender.dt <-
+  dot.tech.gender.dt[rowSums(is.na(dot.tech.gender.dt[,1:9, with = F]))
+                     == 0,,drop = F]
+
+#dot.tech.gender.dt.man<-dot.tech.gender.dt[,1:9, with=F,by = ID]
+
+#remove all NA rows in all other acc/use technology columns 10 :534
+
+dot.tech.gender.dt <-
+  dot.tech.gender.dt[rowSums(is.na(dot.tech.gender.dt[,10:584, with = F])) != 484,,drop = F]
+
+```
+```{r, echo=FALSE, make_subsets, results = "hold",warning=F}
+#frame the columns for subsets
+#now the clean dot.tech.gender.dt dimensions are 548 x 534. so there were 19 such cases
+
+cols.1 <-
+  colnames(dot.tech.gender.dt)[grep("acc.dev",names(dot.tech.gender.dt))]
+cols.2 <-
+  colnames(dot.tech.gender.dt)[grep("dev.use.freq.",names(dot.tech.gender.dt))]
+cols.3 <-
+  colnames(dot.tech.gender.dt)[grep("use.loc.device.",names(dot.tech.gender.dt))]
+cols.4 <-
+  colnames(dot.tech.gender.dt)[grep("acc.to.Internet.",names(dot.tech.gender.dt))]
+cols.5 <-
+  colnames(dot.tech.gender.dt)[grep("use.Internet",names(dot.tech.gender.dt))]
+cols.6 <-
+  colnames(dot.tech.gender.dt)[grep("use.loc.Internet.",names(dot.tech.gender.dt))]
+cols.7 <-
+  colnames(dot.tech.gender.dt)[grep("acc.digi.tools.",names(dot.tech.gender.dt))]
+cols.8 <-
+  colnames(dot.tech.gender.dt)[grep("loc.use.digi.tools.",names(dot.tech.gender.dt))]
+
+############################################
+## now get 8 subsets of data and merge them as needed for the associations
+
+#Get only relevant columns from the dot survey response data set for technology access variables
+dot.gen.acc.dev.dt <-
+  subset(dot.tech.gender.dt, select = grepl(
+    "ID|Gender|Age|Location|Geo|acc.dev", names(dot.tech.gender.dt)
+  ))
+dot.gen.use.dev.dt <-
+  subset(dot.tech.gender.dt, select = grepl(
+    "ID|Gender|Age|Location|Geo|dev.use.freq.", names(dot.tech.gender.dt)
+  ))
+dot.gen.dev.loc.dt <-
+  subset(
+    dot.tech.gender.dt, select = grepl(
+      "ID|Gender|Age|Location|Geo|use.loc.device.", names(dot.tech.gender.dt)
+    )
+  )
+dot.gen.acc.intrnt.dt <-
+  subset(
+    dot.tech.gender.dt, select = grepl(
+      "ID|Gender|Age|Location|Geo|acc.to.Internet.", names(dot.tech.gender.dt)
+    )
+  )
+dot.gen.use.intrnt.dt <-
+  subset(dot.tech.gender.dt, select = grepl(
+    "ID|Gender|Age|Location|Geo|use.Internet.", names(dot.tech.gender.dt)
+  ))
+dot.gen.use.intrnt.loc.dt <-
+  subset(
+    dot.tech.gender.dt, select = grepl(
+      "ID|Gender|Age|Location|Geo|use.loc.Internet.", names(dot.tech.gender.dt)
+    )
+  )
+dot.gen.acc.digi.dt <-
+  subset(
+    dot.tech.gender.dt, select = grepl(
+      "ID|Gender|Age|Location|Geo|acc.digi.tools.", names(dot.tech.gender.dt)
+    )
+  )
+dot.gen.loc.digi.dt <-
+  subset(
+    dot.tech.gender.dt, select = grepl(
+      "ID|Gender|Age|Location|Geo|loc.use.digi.tools.", names(dot.tech.gender.dt)
+    )
+  )
+
+```
+```{r, echo=FALSE, reshape_data_sets, cache=T, results = "hold",warning=F}
+#melt for access to devices
+#melt each of them
+
+dot.gen.acc.dev.dt.m <-
+  data.table(
+    melt(
+      dot.gen.acc.dev.dt,measure.vars = cols.1 ,
+      variable.name = "dev.acc", value.name = "acc.freq"
+    )
+  )
+#one.case<-dot.tech.gender.dt.ac.m[ID ==43912947 , list(dev.acc,acc.freq)]
+
+#http://stackoverflow.com/questions/28230360/using-grepl-in-r-to-match-string
+dot.gen.acc.dev.dt.m$device = apply(dot.gen.acc.dev.dt.m, 1, function(u) {
+  bool = sapply(device[,1], function(x)
+    grepl(x, u[['dev.acc']]))
+  if (any(bool) & (!is.na(u[['acc.freq']])))
+    device[bool]
+  else
+    NA
+})
+
+#
+# #add access.freq column
+#
+dot.gen.acc.dev.dt.m$dev.avail.freq = apply(dot.gen.acc.dev.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['dev.acc']]))
+  if (any(bool) & (!is.na(u[['acc.freq']])))
+    freq[bool]
+  else
+    NA
+})
+one.acc.case.m <-
+  dot.gen.acc.dev.dt.m[ID == 43912947 , list(dev.acc,acc.freq,device,dev.avail.freq)]
+
+# #remove the measure cols and value cols from dcast formula
+id.cols.acc.m <-
+  colnames(dot.gen.acc.dev.dt.m)[-grep("dev.acc|acc.freq",names(dot.gen.acc.dev.dt.m))]
+
+f <-
+  as.formula(paste(paste(id.cols.acc.m, collapse = " + "), "~ dev.acc"))
+
+dot.gen.acc.dev.dt <-
+  data.table(dcast(data = dot.gen.acc.dev.dt.m[!is.na(dev.avail.freq),], f, value.var = "acc.freq",function(x)
+    length(unique(x))))
+
+dot.gen.acc.dev.dt.m <- NULL
+#drop acc: columns..
+#http://stackoverflow.com/questions/24590341/removing-multiple-columns-from-r-data-table-with-parameter-for-columns-to-remove
+#dt[, (colsToDelete) := NULL]
+
+dot.gen.acc.dev.dt <-
+  dot.gen.acc.dev.dt[, which(grepl("acc.dev", colnames(dot.gen.acc.dev.dt))):=
+                       NULL]
+one.acc.case <-
+  dot.gen.acc.dev.dt[ID == 43912947 , list(device,dev.avail.freq)]
+#
+id.cols.acc.m <- NULL
+f <- NULL
+
+
+#enter image description here
+#http://stats.stackexchange.com/questions/90380/interpreting-negative-coordinates-and-origin-in-2d-correspondence-analysis-plot?lq=1
+
+##############################use device##########################
+
+dot.gen.use.dev.dt.m <-
+  data.table(
+    melt(
+      dot.gen.use.dev.dt,measure.vars = cols.2 ,
+      variable.name = "dev.use", value.name = "dev.use.freq"
+    )
+  )
+
+dot.gen.use.dev.dt.m$device.use = apply(dot.gen.use.dev.dt.m, 1, function(u) {
+  bool = sapply(device[,1], function(x)
+    grepl(x, u[['dev.use']]))
+  if (any(bool) & (!is.na(u[['dev.use.freq']])))
+    device[bool]
+  else
+    NA
+})
+
+#
+# add use.freq column
+#
+dot.gen.use.dev.dt.m$use.dev.freq = apply(dot.gen.use.dev.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['dev.use']]))
+  if (any(bool) & (!is.na(u[['dev.use.freq']])))
+    freq[bool]
+  else
+    NA
+})
+
+#
+# #remove the measure cols and value cols from dcast formula
+id.cols.use.m <-
+  colnames(dot.gen.use.dev.dt.m)[-grep("dev.use|dev.use.freq",names(dot.gen.use.dev.dt.m))]
+f <-
+  as.formula(paste(paste(id.cols.use.m, collapse = " + "), "~ dev.use"))
+dot.gen.use.dev.dt <-
+  data.table(dcast(data = dot.gen.use.dev.dt.m[!is.na(use.dev.freq),], f, value.var = "dev.use.freq",function(x)
+    length(unique(x))))
+
+dot.gen.use.dev.dt <-
+  dot.gen.use.dev.dt[, which(grepl("dev.use|dev.use.freq", colnames(dot.gen.use.dev.dt))):=
+                       NULL]
+one.use.case <-
+  dot.gen.use.dev.dt[ID == 43912947 , list(device.use,use.dev.freq)]
+dot.gen.use.dev.dt.m <- NULL
+id.cols.use.m <- NULL
+f <- NULL
+
+
+##############################use location of device##########################
+dev.use.loc <-
+  matrix(
+    c(
+      "EverywhereIalwayshaveaninternetenableddevice", "Evrywhr.IE.device",
+      "Atwork", "work",
+      "Athome", "home",
+      "Atafamilymembershouse", "FM house",
+      "Atschool", "school",
+      "Atalibrarycommunitycentreorchurch", "library.CC.Church",
+      "Ataninternetcafe", "ICafe"
+    ),ncol = 2, byrow = T
+  )
+
+
+
+dot.gen.dev.loc.dt.m <-
+  data.table(
+    melt(
+      dot.gen.dev.loc.dt,measure.vars = cols.3 ,
+      variable.name = "dev.loc", value.name = "loc.freq"
+    )
+  )
+
+dot.gen.dev.loc.dt.m$use.at = apply(dot.gen.dev.loc.dt.m, 1, function(u) {
+  bool = sapply(dev.use.loc[,1], function(x)
+    grepl(x, u[['dev.loc']]))
+  if (any(bool) &
+      (!is.na(u[['loc.freq']])))
+    dev.use.loc[bool, 2]
+  else
+    NA
+})
+
+#
+# add use.location column
+#
+dot.gen.dev.loc.dt.m$location.use.freq = apply(dot.gen.dev.loc.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['dev.loc']]))
+  if (any(bool) & (!is.na(u[['loc.freq']])))
+    freq[bool]
+  else
+    NA
+})
+
+#
+# #remove the measure cols and value cols from dcast formula
+id.cols.use.loc.m <-
+  colnames(dot.gen.dev.loc.dt.m)[-grep("dev.loc|loc.freq",names(dot.gen.dev.loc.dt.m))]
+f <-
+  as.formula(paste(paste(id.cols.use.loc.m, collapse = " + "), "~ dev.loc"))
+dot.gen.dev.loc.dt <-
+  data.table(dcast(data = dot.gen.dev.loc.dt.m[!is.na(location.use.freq),], f, value.var = "loc.freq",function(x)
+    length(unique(x))))
+
+dot.gen.dev.loc.dt <-
+  dot.gen.dev.loc.dt[, which(grepl("use.loc.dev", colnames(dot.gen.dev.loc.dt))):=
+                       NULL]
+one.loc.use.case <-
+  dot.gen.dev.loc.dt[ID == 43912947 , list(use.at,location.use.freq)]
+dot.gen.dev.loc.dt.m <- NULL
+id.cols.use.loc.m <- NULL
+f <- NULL
+
+dot.gen.acc.intrnt.dt.m <-
+  data.table(
+    melt(
+      dot.gen.acc.intrnt.dt, measure.vars = cols.4 ,
+      variable.name = "int.dev.acc", value.name = "int.acc.freq"
+    )
+  )
+
+
+one.inrnt.acc.case.m <-
+  dot.gen.acc.intrnt.dt.m[ID == 43912947 , list(int.dev.acc,int.acc.freq)]
+
+dot.gen.acc.intrnt.dt.m$inrnt.on.device = apply(dot.gen.acc.intrnt.dt.m, 1, function(u) {
+  bool = sapply(device[,1], function(x)
+    grepl(x, u[['int.dev.acc']],ignore.case = TRUE))
+  if (any(bool) & (!is.na(u[['int.acc.freq']])))
+    device[bool]
+  else
+    NA
+})
+
+dot.gen.acc.intrnt.dt.m$inrnt.dev.freq = apply(dot.gen.acc.intrnt.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['int.dev.acc']]))
+  if (any(bool) & (!is.na(u[['int.dev.acc']])))
+    freq[bool]
+  else
+    NA
+})
+
+# #remove the measure cols and value cols from dcast formula
+id.cols.inrnt.acc.m <-
+  colnames(dot.gen.acc.intrnt.dt.m)[-grep("int.dev.acc|int.acc.freq",names(dot.gen.acc.intrnt.dt.m))]
+f <-
+  as.formula(paste(paste(id.cols.inrnt.acc.m, collapse = " + "), "~ int.dev.acc"))
+dot.gen.acc.intrnt.dt <-
+  data.table(
+    dcast(data = dot.gen.acc.intrnt.dt.m[!is.na(int.acc.freq),], f, value.var = "int.acc.freq",function(x)
+      length(unique(x)))
+  )
+
+dot.gen.acc.intrnt.dt <-
+  dot.gen.acc.intrnt.dt[, which(grepl("acc.to.Internet", colnames(dot.gen.acc.intrnt.dt))):=
+                          NULL]
+one.inrnt.acc.case <-
+  dot.gen.acc.intrnt.dt[ID == 43912947 , list(inrnt.on.device,inrnt.dev.freq)]
+dot.gen.acc.intrnt.dt.m <- NULL
+id.cols.inrnt.acc.m <- NULL
+f <- NULL
+
+
+########################internet access location ######################
+###############clean up for internet use freq.on device###########
+
+dot.gen.use.intrnt.dt.m <-
+  data.table(
+    melt(
+      dot.gen.use.intrnt.dt,measure.vars = cols.5 ,
+      variable.name = "use.intrnt", value.name = "use.intrnt.freq"
+    )
+  )
+
+dot.gen.use.intrnt.dt.m$intrnt.use.on.dev = apply(dot.gen.use.intrnt.dt.m, 1, function(u) {
+  bool = sapply(device[,1], function(x)
+    grepl(x, u[['use.intrnt']],ignore.case = T))
+  if (any(bool) &
+      (!is.na(u[['use.intrnt.freq']])))
+    device[bool]
+  else
+    NA
+})
+
+#
+# add use.internt.freq column
+#
+dot.gen.use.intrnt.dt.m$intrnt.on.dev.use.freq = apply(dot.gen.use.intrnt.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['use.intrnt']]))
+  if (any(bool) &
+      (!is.na(u[['use.intrnt.freq']])))
+    freq[bool]
+  else
+    NA
+})
+one.use.intrnt.case <-
+  dot.gen.use.intrnt.dt.m[ID == 43912947 , list(intrnt.use.on.dev,intrnt.on.dev.use.freq)]
+
+#
+# #remove the measure cols and value cols from dcast formula
+id.cols.use.intrnt.on.dev.m <-
+  colnames(dot.gen.use.intrnt.dt.m)[-grep("use.intrnt|use.intrnt.freq",names(dot.gen.use.intrnt.dt.m))]
+f <-
+  as.formula(paste(
+    paste(id.cols.use.intrnt.on.dev.m, collapse = " + "), "~ use.intrnt"
+  ))
+dot.gen.use.intrnt.dt <-
+  data.table(
+    dcast(data = dot.gen.use.intrnt.dt.m[!is.na(use.intrnt.freq),], f, value.var = "use.intrnt.freq",function(x)
+      length(unique(x)))
+  )
+
+dot.gen.use.intrnt.dt <-
+  dot.gen.use.intrnt.dt[, which(grepl("use.Internet",colnames(dot.gen.use.intrnt.dt))):=
+                          NULL]
+one.use.intrnt.case <-
+  dot.gen.use.intrnt.dt[ID == 43912947 , list(intrnt.use.on.dev,intrnt.on.dev.use.freq)]
+dot.gen.use.intrnt.dt.m <- NULL
+id.cols.use.intrnt.on.dev.m <- NULL
+f <- NULL
+
+dot.gen.use.intrnt.loc.dt.m <-
+  data.table(
+    melt(
+      dot.gen.use.intrnt.loc.dt,measure.vars = cols.6 ,
+      variable.name = "use.loc.intrnt", value.name = "use.loc.intrnt.freq"
+    )
+  )
+
+dot.gen.use.intrnt.loc.dt.m$intrnt.use.loc = apply(dot.gen.use.intrnt.loc.dt.m, 1, function(u) {
+  bool = sapply(dev.use.loc[,1], function(x)
+    grepl(x, u[['use.loc.intrnt']],ignore.case = T))
+  if (any(bool) &
+      (!is.na(u[['use.loc.intrnt.freq']])))
+    dev.use.loc[bool, 2]
+  else
+    NA
+})
+
+# add use.internt.freq column
+#
+dot.gen.use.intrnt.loc.dt.m$intrnt.use.loc.freq = apply(dot.gen.use.intrnt.loc.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['use.loc.intrnt']]))
+  if (any(bool) &
+      (!is.na(u[['use.loc.intrnt.freq']])))
+    freq[bool]
+  else
+    NA
+})
+
+#
+# #remove the measure cols and value cols from dcast formula
+id.cols.use.intrnt.loc.m <-
+  colnames(dot.gen.use.intrnt.loc.dt.m)[-grep("use.loc.intrnt|use.loc.intrnt.freq",names(dot.gen.use.intrnt.loc.dt.m))]
+f <-
+  as.formula(paste(
+    paste(id.cols.use.intrnt.loc.m, collapse = " + "), "~ use.loc.intrnt"
+  ))
+dot.gen.use.intrnt.loc.dt <-
+  data.table(
+    dcast(data = dot.gen.use.intrnt.loc.dt.m[!is.na(use.loc.intrnt.freq),], f, value.var = "use.loc.intrnt.freq",function(x)
+      length(unique(x)))
+  )
+
+dot.gen.use.intrnt.loc.dt <-
+  dot.gen.use.intrnt.loc.dt[, which(grepl("use.loc.Internet", colnames(dot.gen.use.intrnt.loc.dt))):=
+                              NULL]
+one.use.loc.intrnt.case <-
+  dot.gen.use.intrnt.loc.dt[ID == 43912947 , list(intrnt.use.loc,intrnt.use.loc.freq)]
+dot.gen.use.intrnt.loc.dt.m <- NULL
+id.cols.use.intrnt.loc.m <- NULL
+f <- NULL
+
+
+######################### access to digital services#########################
+
+digi.tools <-
+  matrix(
+    c(
+      "useSMSTextmessages","takedigitalphotos","takedigitalvideos", "makedigitalpayments",
+      "receivedigitalpayments","accesspoliticalnews","accesssocialnetworksFacebookTwitterothers",
+      "getinformationaboutmyhealth","lookforapplyforjobs","offerprofessionalservicesforafee",
+      "playgames","researchtopicsthatinterestme","engageindiscussionswithmypeers",
+      "useawordprocessor","usebudgetingtools","createappsforsmartphonesorcomputers",
+      "buildawebsite","sellproductsorservicesonline","accessbankingandorfinancialservicesaccountsloans"
+    )
+    , ncol = 1,byrow = T
+  )
+
+digi.ser.t <- as.table(digi.tools)
+
+dot.gen.acc.digi.dt.m <-
+  data.table(
+    melt(
+      dot.gen.acc.digi.dt,measure.vars = cols.7 ,
+      variable.name = "digi.acc", value.name = "digi.tools"
+    )
+  )
+dot.gen.acc.digi.dt.m$tool.ser.dig = apply(dot.gen.acc.digi.dt.m, 1, function(u) {
+  bool = sapply(digi.ser.t[,1], function(x)
+    grepl(x, u[['digi.acc']],ignore.case = T))
+  if (any(bool) &
+      (!is.na(u[['digi.tools']])))
+    digi.ser.t[bool]
+  else
+    NA
+})
+
+
+
+dot.gen.acc.digi.dt.m$frq.ac.dig = apply(dot.gen.acc.digi.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['digi.acc']]))
+  if (any(bool) & (!is.na(u[['digi.tools']])))
+    freq[bool]
+  else
+    NA
+})
+
+
+id.cols.digi.tools.m <-
+  colnames(dot.gen.acc.digi.dt.m)[-grep("digi.acc|digi.tools",names(dot.gen.acc.digi.dt.m))]
+f <-
+  as.formula(paste(paste(id.cols.digi.tools.m, collapse = " + "), "~ digi.acc"))
+
+dot.gen.acc.digi.dt <-
+  data.table(dcast(data = dot.gen.acc.digi.dt.m[!is.na(digi.tools),], f, value.var = "digi.tools",function(x)
+    length(unique(x))))
+one.acc.digi.loc.case <-
+  dot.gen.acc.digi.dt[ID == 43912947 , list(tool.ser.dig,frq.ac.dig)]
+
+dot.gen.acc.digi.dt <-
+  dot.gen.acc.digi.dt[, which(grepl("acc.digi.tools", colnames(dot.gen.acc.digi.dt))):=
+                        NULL]
+id.cols.digi.tools.m <- NULL
+dot.gen.acc.digi.dt.m <- NULL
+f <- NULL
+
+
+
+###################location use of digitial services###############
+
+dot.gen.loc.digi.dt.m <-
+  data.table(
+    melt(
+      dot.gen.loc.digi.dt,measure.vars = cols.8 ,
+      variable.name = "loc.use.digi", value.name = "loc.digi.freq"
+    )
+  )
+
+dot.gen.loc.digi.dt.m$digi.loc.of.use = apply(dot.gen.loc.digi.dt.m, 1, function(u) {
+  bool = sapply(dev.use.loc[,1], function(x)
+    grepl(x, u[['loc.use.digi']],ignore.case = T))
+  if (any(bool) &
+      (!is.na(u[['loc.digi.freq']])))
+    dev.use.loc[bool, 2]
+  else
+    NA
+})
+
+# add use.internt.freq column
+#
+dot.gen.loc.digi.dt.m$at.loc.digi.use.freq = apply(dot.gen.loc.digi.dt.m, 1, function(u) {
+  bool = sapply(freq[,1], function(x)
+    grepl(x, u[['loc.use.digi']]))
+  if (any(bool) & (!is.na(u[['loc.digi.freq']])))
+    freq[bool]
+  else
+    NA
+})
+
+
+#
+# #remove the measure cols and value cols from dcast formula
+id.cols.use.digi.loc.m <-
+  colnames(dot.gen.loc.digi.dt.m)[-grep("loc.use.digi|loc.digi.freq",names(dot.gen.loc.digi.dt.m))]
+f <-
+  as.formula(paste(paste(id.cols.use.digi.loc.m, collapse = " + "), "~ loc.use.digi"))
+dot.gen.loc.digi.dt <-
+  data.table(
+    dcast(data = dot.gen.loc.digi.dt.m[!is.na(loc.digi.freq),], f, value.var = "loc.digi.freq",function(x)
+      length(unique(x)))
+  )
+
+dot.gen.loc.digi.dt <-
+  dot.gen.loc.digi.dt[, which(grepl("loc.use.digi.tools", colnames(dot.gen.loc.digi.dt))):=
+                        NULL]
+one.use.digi.loc.case <-
+  dot.gen.loc.digi.dt[ID == 43912947 , list(digi.loc.of.use,at.loc.digi.use.freq)]
+dot.gen.loc.digi.dt.m <- NULL
+id.cols.use.digi.loc.m <- NULL
+f <- NULL
+
+```
+```{r, m-way-tables, echo = F, warning=F, results = "asis"}
+
+# dot.gen.acc.dev.dt
+# dot.gen.use.dev.dt
+# dot.gen.dev.loc.dt
+# dot.gen.acc.intrnt.dt
+# dot.gen.use.intrnt.dt
+# dot.gen.use.intrnt.loc.dt
+# dot.gen.acc.digi.dt
+# dot.gen.loc.digi.dt
+# <-subset(dot.tech.gender.dt, select = grepl("ID|Gender|Age|Location|Geo|loc.use.digi.tools.", names(dot.tech.gender.dt)))
+print(dot.gen.acc.dev.dt[1:5,1:11,with=F])
+
+```
+
+```{r, echo=FALSE, warning=F}
+#https://select-statistics.co.uk/blog/analysing-categorical-data-using-logistic-regression-models/
+
+
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+plot(cars)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
