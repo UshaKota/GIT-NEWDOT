@@ -15,9 +15,8 @@ output:
 
 ## Part 1 -Introduction
 
-ref://https://www.dotrust.org/about/
 
-Digital Opportunity Trust (DOT) is a leading international social enterprise headquartered in Ottawa, Canada with local operations around the globe. 
+Digital Opportunity Trust (DOT)(ref://https://www.dotrust.org) is a leading international social enterprise headquartered in Ottawa, Canada with local operations around the globe. 
 DOT mobilizes youth the talent and energy helping them to develop both an entrepreneurial spirit and technology and business skills that will last a lifetime. Young people are encouraged to become leaders of change as they facilitate technology, business, and entrepreneurial learning experiences to people in their own communities.
 
 DOT's unique youth-led programs empower people living in communities that are developing, in transition, or under stress with the confidence to use technology for entrepreneurial, community, educational, and personal development. 
@@ -67,9 +66,13 @@ This section summarises the understanding of Survey Data
 
 
 ####  1.Populations and samples
+
 The target population in the DOT survey report is youth of different age categories who belong to Canada , Sub sahara countries of Africa and Lebanon, well stratifies by Age, Gender and Location 
 The data consists of 568 respondents randomly sampled from the target locations and by Age, Gender forming a well representaion of stratified sampled data. Hence it is reasonable to assume that the estimates on the sample cases will be unbiased
+ 
 DOT research team conducted a prospective observational study,  with a cohort of 568 individuals and responses collected over 1500 features. Hence it is intended to check for any evidence of association between the features over which the  data was collected
+
+Ref:https://onlinecourses.science.psu.edu/stat504/book/export/html/102
 
 Each row of data represents a case of 1539 features. The total number of cases are 568
 DOT Data is a collection of responses over features that are dichotmous ( binary, nominal and categorical (multi-level responses)) type, collected from each respondent.
@@ -81,7 +84,7 @@ Data also includes variable that elicit  open-ended responses to questions from 
 
 This section describes how the data is organised for exploratory and inferential analysis.
 
-For a majority of categorical multi-level variables, Data is organanized to individual subsets for each set of explanatory and response variables. Cross tabulation of multi-way (minimum of 3 dimensions) is a chosen as a perferred method to study any association between the chosen features
+For a majority of categorical multi-level variables, Data is organanized to individual subsets for each set of explanatory and response variables. this ensures a Multinomial sampling with fixed samples sizes, stratified by different variables. Cross tabulation of multi-way (minimum of 3 dimensions) is a chosen as a perferred method to study any association between the chosen features
 
 Data cleaning up process comprised of the foll:
 
@@ -994,7 +997,7 @@ plot.tech.data<-function(sub.dt,facet.var,tech.use.acc.freq.var, titl.str) {
         geom_bar(aes(fill = GenderC), stat="identity") + 
         geom_text(aes(label = ifelse(plot.freq.dt$Frequency > 20,
                                    plot.freq.dt$Frequency,""), y = pos),
-                  size = 6) +
+                  size = 5) +
     
       facet_wrap(reformulate(facet.var),scales = "free_y" ) +
       theme(strip.text.x = element_text(size=20)) + 
@@ -1002,7 +1005,7 @@ plot.tech.data<-function(sub.dt,facet.var,tech.use.acc.freq.var, titl.str) {
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
       ggtitle(titl.str) +
       theme(plot.title = element_text(size = rel(3), colour = "blue"),
-            axis.title.x = element_text(color="blue", size=30, face="bold"),
+            axis.title.x = element_text(color="blue", size=20, face="bold"),
             axis.title.y = element_text(color="blue", 
                                         size=30, face="bold")) +
       theme(legend.text = element_text(size = 16, colour = "blue")) +
@@ -1065,12 +1068,12 @@ dev.use.tab<-xtabs(~use.dev.freq + GenderC + device.use, data = dot.gen.use.dev.
 # 
 summary(dev.use.tab)
 
-print("check the observed and expected counts")
-
-print(chisq.test(dev.use.tab)$observed)
-
-print(chisq.test(dev.use.tab)$expected)
-
+# print("check the observed and expected counts")
+# 
+# print(chisq.test(dev.use.tab)$observed)
+# 
+# print(chisq.test(dev.use.tab)$expected)
+# 
 print("the expected counts are much lower and hence the warning" )
 
 print("Use Monte-Carlo simulation test")
@@ -1092,9 +1095,247 @@ cotabplot(pt, panel = cotab_coindep, shade = TRUE,legend = FALSE,
 
 
 ```
-```{r, echo=FALSE, warning=F}
+#### 3. Where do you most commonly use the devices you have access to
+
+```{r, echo=FALSE, warning=F,cache=T,fig.height= 8,fig.width=10,anal_dev_use_loc}
+
+
+plot.tech.data(dot.gen.dev.loc.dt, "use.at", "location.use.freq", "Device use location By Gender")
+
+
+mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at)),])
+
+
+dev.use.loc.tab<-xtabs(~use.at + GenderC , data = dot.gen.dev.loc.dt)
+# 
+summary(dev.use.loc.tab)
+
+
+mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at),as.factor(location.use.freq)) ,])
+
+set.seed(1004)
+
+pl<-xtabs(~use.at + location.use.freq + GenderC,data = dot.gen.dev.loc.dt)
+
+summary(pl)
+
+cotabplot(pl, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
+
 
 ```
+
+
+#### 5.How much access to do you have to the Internet?
+
+```{r, echo=F,fig.height=10,fig.width=10,anal_intrnt_access,cache=T,warning=F}
+
+
+plot.tech.data(dot.gen.acc.intrnt.dt, "inrnt.on.device", "inrnt.dev.freq", "Internet Access  By Gender")
+
+
+mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.dev.freq)),])
+
+
+dev.acc.intrnt.tab<-xtabs(~inrnt.dev.freq + GenderC , data = dot.gen.acc.intrnt.dt)
+# 
+summary(dev.acc.intrnt.tab)
+
+
+mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.on.device),as.factor(inrnt.dev.freq)) ,])
+
+set.seed(2001)
+
+pInt<-xtabs(~inrnt.dev.freq + inrnt.on.device + GenderC,data = dot.gen.acc.intrnt.dt)
+
+summary(pInt)
+
+cotabplot(pInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
+
+
+
+```
+
+
+#### 6.How often do you actually use the Internet?
+
+```{r,echo=F,fig.height=10,fig.width=12,anal_intrnt_use,cache=T,warning=F}
+
+plot.tech.data(dot.gen.use.intrnt.dt, "intrnt.use.on.dev", "intrnt.on.dev.use.freq", "Internet use  By Gender")
+
+
+mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.on.dev.use.freq)),])
+
+
+dev.use.intrnt.tab<-xtabs(~intrnt.on.dev.use.freq + GenderC , data = dot.gen.use.intrnt.dt)
+# 
+summary(dev.use.intrnt.tab)
+
+
+mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.use.on.dev),as.factor(intrnt.on.dev.use.freq)) ,])
+
+set.seed(2701)
+
+pUInt<-xtabs(~intrnt.on.dev.use.freq + intrnt.use.on.dev + GenderC,data = dot.gen.use.intrnt.dt)
+
+summary(pUInt)
+
+cotabplot(pUInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
+
+
+
+
+```
+
+#### 7.Where do you most commonly use the Internet?
+
+```{r,fig.height=10,fig.width=10,anal_intrnt_use_loc,cache=T,warning=F}
+
+
+plot.tech.data(dot.gen.use.intrnt.loc.dt, "intrnt.use.loc", "intrnt.use.loc.freq", "Location of Internet use  By Gender")
+
+
+mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc)),])
+
+
+dev.use.intrnt.loc.tab<-xtabs(~intrnt.use.loc + GenderC , data = dot.gen.use.intrnt.loc.dt)
+# 
+summary(dev.use.intrnt.loc.tab)
+
+
+mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc),as.factor(intrnt.use.loc.freq)) ,])
+
+set.seed(2879)
+
+pLocInt<-xtabs(~intrnt.use.loc + intrnt.use.loc.freq + GenderC,data = dot.gen.use.intrnt.loc.dt)
+
+summary(pUInt)
+
+cotabplot(pLocInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
+
+
+
+
+
+```
+
+#### 8.What digital services/tools do you have access to?
+
+```{r,echo=F,fig.height=10,fig.width=12,anal_digi_tools_acc,cache=T,warning=F}
+
+plot.tech.data(dot.gen.acc.digi.dt, "tool.ser.dig", "frq.ac.dig", "Digital Tools Access  By Gender")
+
+
+mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig)),])
+
+
+dig.tools.acc.tab<-xtabs(~tool.ser.dig + GenderC , data = dot.gen.acc.digi.dt)
+# 
+summary(dig.tools.acc.tab)
+
+
+mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig),as.factor(frq.ac.dig)) ,])
+
+set.seed(28891)
+
+pdigAc<-xtabs(~tool.ser.dig + frq.ac.dig + GenderC,data = dot.gen.acc.digi.dt)
+
+summary(pdigAc)
+
+cotabplot(pdigAc, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
+
+
+
+
+
+```
+
+
+#### 9.Where do you most commonly use digital services?**
+
+```{r,echo=F,fig.height=10,fig.width=10,anal_digi_tools_use_loc,cache=T,warning=F}
+
+plot.tech.data(dot.gen.loc.digi.dt, "digi.loc.of.use", "at.loc.digi.use.freq", "Location of Digital tools use ~ Gender")
+
+
+mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use)),])
+
+
+dig.loc.use.tab<-xtabs(~digi.loc.of.use + GenderC , data = dot.gen.loc.digi.dt)
+# 
+summary(dig.loc.use.tab)
+
+
+mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use),as.factor(at.loc.digi.use.freq)) ,])
+
+set.seed(00221)
+
+pdiglocU<-xtabs(~digi.loc.of.use + at.loc.digi.use.freq + GenderC,data = dot.gen.loc.digi.dt)
+
+summary(pdiglocU)
+
+cotabplot(pdiglocU, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 20),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
+
+
+
+
+
+```
+
+
 ```{r, echo=FALSE, warning=F}
 
 ```
