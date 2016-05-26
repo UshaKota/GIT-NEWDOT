@@ -1,10 +1,4 @@
 base
-methods
-datasets
-utils
-grDevices
-graphics
-stats
 data.table
 ggplot2
 plyr
@@ -14,8 +8,9 @@ tidyr
 reshape2
 knitr
 RColorBrewer
-grid
 vcd
 lattice
 MASS
 FactoMineR
+factoextra
+corrplot

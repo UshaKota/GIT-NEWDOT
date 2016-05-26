@@ -105,8 +105,8 @@ library(vcd)
 library(lattice)
 library(MASS)
 library(FactoMineR)
-
-
+library("factoextra")
+library(corrplot)
 
 ```
 
@@ -164,11 +164,11 @@ print(head(dotsr[1:5,1:21,with = F]))
 ```
 #### 3.Exploratory View of Demographics
 
-```{r, DOT_demographics, cache=F,fig.height=8, fig.width=14,echo=F,results = 'hold',warning=F}
+```{r, DOT_demographics, cache=T,fig.height=8, fig.width=14,echo=F,results = 'hold',warning=F}
 
-make.plot.dt<-function(main.dt, plot.var){
+make.plot.dt<-function(main.dt, plot.var,freq.var2){
   plotting.dt<-main.dt[, list(Frequency = length(ID)),
-                       by = c( "AgeC","GenderC",plot.var)]
+                       by = c( plot.var,freq.var2, "GenderC")]
   return (plotting.dt)
   
 }
@@ -187,17 +187,17 @@ make.plot.freq.dt<-function(plotting.dt, freq.var1,freq.var2) {
 }
 
 plot.data<-function(main.dt,facet.var,freq.var2, titl.str) {
-  plotting.dt<-make.plot.dt(main.dt,facet.var)
+  plotting.dt<-make.plot.dt(main.dt,facet.var,freq.var2)
   plot.freq.dt<-make.plot.freq.dt(plotting.dt, facet.var,freq.var2)
-  
-  gg<-ggplot(plot.freq.dt, aes(x=plot.freq.dt$AgeC,
+  xval<-plot.freq.dt[[freq.var2]]
+  gg<-ggplot(plot.freq.dt, aes(x=xval,
                                y= plot.freq.dt$Frequency )) +
     
     geom_bar(aes(fill = plot.freq.dt$GenderC), stat="identity") +
     
     geom_text(aes(label = ifelse(plot.freq.dt$Frequency >= 5,
                                  plot.freq.dt$Frequency,""), 
-                                  y = pos), size = 5) +
+                  y = pos), size = 5) +
     facet_wrap(reformulate(facet.var),scales = "free_y" ) + 
     theme(strip.text.x = element_text(size=16)) +
     theme(axis.text = element_text(colour = "blue",size = 16)) + 
@@ -214,6 +214,9 @@ plot.data<-function(main.dt,facet.var,freq.var2, titl.str) {
   print(gg)
   
 }
+
+
+
 plot.data(dotsr, "LocationRespondent", "AgeC", 
           "Survey Demographics by Location")
 
@@ -229,6 +232,11 @@ plot.data(dotsr, "EmploymentC", "AgeC",
 plot.data(dotsr, "OccupationC", "AgeC", 
           "Survey Demographics by Occupation")
 
+plot.data(dotsr, "GeographyC", "EducationC", 
+          "Survey Demographics of Education by Geography")
+
+plot.data(dotsr, "EmploymentC", "EducationC", 
+          "Survey Demographics of Employment by Education")
 
 dot.tab1<-table(dotsr$GenderC,dotsr$AgeC)
 dot.tab2<-table(dotsr$GenderC,dotsr$EducationC)
@@ -479,7 +487,7 @@ dot.gen.loc.digi.dt <-
   )
 
 ```
-```{r, echo=FALSE, reshape_data_sets, cache=T, results = "hold",warning=F}
+```{r, echo=FALSE, reshape_data_sets, cache=T, results = "hide",warning=F}
 #melt for access to devices
 #melt each of them
 
@@ -945,9 +953,74 @@ id.cols.use.digi.loc.m <- NULL
 f <- NULL
 
 ```
-```{r, m-way-tables, echo = F, warning=F, results = "asis"}
 
-# dot.gen.acc.dev.dt
+```{r, echo=FALSE, warning=F,caceh=T,plot_freq_tech,fig.height=12, fig.width=16}
+#https://select-statistics.co.uk/blog/analysing-categorical-data-using-logistic-regression-models/
+
+make.plot.tech.dt<-function(sub.dt, facet.var,tech.use.acc.freq.var){
+  
+  plotting.dt<-sub.dt[, list(Frequency = length(ID)),
+                         by = c(facet.var, tech.use.acc.freq.var,"GenderC")]
+  return (plotting.dt)
+  
+}
+
+
+make.plot.tech.freq.dt<-function(plotting.dt, freq.var1,freq.var2) {
+  
+  Frequency<-plotting.dt$Frequency
+  
+  freq.var1<-freq.var1
+  freq.var2<-freq.var2
+  
+  plot.freq.dt <- ddply(plotting.dt,.(plotting.dt[[freq.var1]],
+                                      plotting.dt[[freq.var2]]), 
+                        transform, pos = cumsum(Frequency) -(0.5*Frequency))
+  return (plot.freq.dt)
+  
+  
+}
+
+plot.tech.data<-function(sub.dt,facet.var,tech.use.acc.freq.var, titl.str) {
+  
+    cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+    
+    plotting.dt<-make.plot.tech.dt(sub.dt,facet.var,
+                                   tech.use.acc.freq.var)
+    plot.freq.dt<-make.plot.tech.freq.dt(plotting.dt,facet.var,
+                                         tech.use.acc.freq.var)
+    gg<-ggplot(plot.freq.dt, aes(x=plot.freq.dt[[tech.use.acc.freq.var]],
+                                 y= plot.freq.dt$Frequency )) + 
+        geom_bar(aes(fill = GenderC), stat="identity") + 
+        geom_text(aes(label = ifelse(plot.freq.dt$Frequency > 20,
+                                   plot.freq.dt$Frequency,""), y = pos),
+                  size = 6) +
+    
+      facet_wrap(reformulate(facet.var),scales = "free_y" ) +
+      theme(strip.text.x = element_text(size=20)) + 
+      theme(axis.text = element_text(colour = "blue",size = 16)) + 
+      theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+      ggtitle(titl.str) +
+      theme(plot.title = element_text(size = rel(3), colour = "blue"),
+            axis.title.x = element_text(color="blue", size=30, face="bold"),
+            axis.title.y = element_text(color="blue", 
+                                        size=30, face="bold")) +
+      theme(legend.text = element_text(size = 16, colour = "blue")) +
+      labs(x = "Frequency Category", y = "Frequency",size = 20, 
+           color = "blue") +
+      scale_fill_brewer(palette= "Set3")  
+        
+      
+     print(gg)
+    
+}
+
+mca.plot<-function(ca.dt){
+  res.ca <- MCA(ca.dt, graph = F)
+  fviz_mca_var(res.ca, labelsize = 6, pointsize = 4,col.var = "contrib")
+
+}
+#dot.gen.acc.dev.dt
 # dot.gen.use.dev.dt
 # dot.gen.dev.loc.dt
 # dot.gen.acc.intrnt.dt
@@ -955,18 +1028,68 @@ f <- NULL
 # dot.gen.use.intrnt.loc.dt
 # dot.gen.acc.digi.dt
 # dot.gen.loc.digi.dt
-# <-subset(dot.tech.gender.dt, select = grepl("ID|Gender|Age|Location|Geo|loc.use.digi.tools.", names(dot.tech.gender.dt)))
-print(dot.gen.acc.dev.dt[1:5,1:11,with=F])
+
+```
+#### 1. What devices do you have access to?
+
+
+```{r, anal-dev-acc-by-gender, echo = F, warning=F, cache = T,fig.height = 8,fig.width=14}
+
+plot.tech.data(dot.gen.acc.dev.dt, "device", "dev.avail.freq", "Device Access By Gender")
+
+
+print("Is there an association between respondent's Gender and device accessed ?")
+
+print("The response variable here is the device and the explanatory variable is Gender")
+
+print("A simpler - Chi.Square test should be sufficient to test for Independence")
+dev.acc.tab1<-xtabs(~device + GenderC, data = dot.gen.acc.dev.dt)
+kable(prop.table(dev.acc.tab1,1))
+summary(dev.acc.tab1)
+
+
+mca.plot(dot.gen.acc.dev.dt[,list(as.factor(GenderC), as.factor(device), as.factor(dev.avail.freq)),])
 
 ```
 
-```{r, echo=FALSE, warning=F}
-#https://select-statistics.co.uk/blog/analysing-categorical-data-using-logistic-regression-models/
+#### 2. How often do you actually use these devices?
 
 
+```{r, echo=FALSE,anal-dev-use-by-gender, warning=F,cache=T,fig.height = 8,fig.width=14}
 
-```
-```{r, echo=FALSE, warning=F}
+plot.tech.data(dot.gen.use.dev.dt, "device.use", "use.dev.freq", "Device use By Gender")
+
+mca.plot(dot.gen.use.dev.dt[,list(as.factor(GenderC), as.factor(device.use), as.factor(use.dev.freq)),])
+
+dev.use.tab<-xtabs(~use.dev.freq + GenderC + device.use, data = dot.gen.use.dev.dt)
+# 
+summary(dev.use.tab)
+
+print("check the observed and expected counts")
+
+print(chisq.test(dev.use.tab)$observed)
+
+print(chisq.test(dev.use.tab)$expected)
+
+print("the expected counts are much lower and hence the warning" )
+
+print("Use Monte-Carlo simulation test")
+
+chisq.test(dev.use.tab, simulate.p.value = TRUE)
+
+print("Check the associations along with the devices")
+set.seed(1072)
+pt<-xtabs(~use.dev.freq + device.use + GenderC,data = dot.gen.use.dev.dt)
+cotabplot(pt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 16),pop = T)
+
+
 
 ```
 ```{r, echo=FALSE, warning=F}
@@ -1001,4 +1124,3 @@ plot(cars)
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

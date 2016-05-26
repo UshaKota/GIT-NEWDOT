@@ -49,8 +49,10 @@ dot.tech.gender.dt<-subset(dotsr,
                                    names(dotsr)))
 
 
-make.plot.dt<-function(main.dt, plot.var){
-  plotting.dt<-main.dt[, list(Frequency = length(ID)),by = c( "AgeC","GenderC",plot.var)]
+
+make.plot.dt<-function(main.dt, plot.var,freq.var2){
+  plotting.dt<-main.dt[, list(Frequency = length(ID)),
+                       by = c( plot.var,freq.var2, "GenderC")]
   return (plotting.dt)
   
 }
@@ -60,26 +62,32 @@ make.plot.freq.dt<-function(plotting.dt, freq.var1,freq.var2) {
   freq.var1<-freq.var1
   freq.var2<-freq.var2
   
-  plot.freq.dt <- ddply(plotting.dt, .(plotting.dt[[freq.var1]],plotting.dt[[freq.var2]]), 
-                        transform, pos = cumsum(Frequency) - (0.5 *Frequency))
+  plot.freq.dt <- ddply(plotting.dt,.(plotting.dt[[freq.var1]],
+                                      plotting.dt[[freq.var2]]), 
+                        transform, pos = cumsum(Frequency) - (0.5*Frequency))
   return (plot.freq.dt)
   
   
 }
 
 plot.data<-function(main.dt,facet.var,freq.var2, titl.str) {
-  plotting.dt<-make.plot.dt(main.dt,facet.var)
+  plotting.dt<-make.plot.dt(main.dt,facet.var,freq.var2)
   plot.freq.dt<-make.plot.freq.dt(plotting.dt, facet.var,freq.var2)
-  
-  gg<-ggplot(plot.freq.dt, aes(x=plot.freq.dt$AgeC,y= plot.freq.dt$Frequency )) +
+  xval<-plot.freq.dt[[freq.var2]]
+  gg<-ggplot(plot.freq.dt, aes(x=xval,
+                               y= plot.freq.dt$Frequency )) +
+    
     geom_bar(aes(fill = plot.freq.dt$GenderC), stat="identity") +
-    geom_text(aes(label = ifelse(plot.freq.dt$Frequency >= 5, plot.freq.dt$Frequency,""), y = pos),
-              size = 5) +
+    
+    geom_text(aes(label = ifelse(plot.freq.dt$Frequency >= 5,
+                                 plot.freq.dt$Frequency,""), 
+                  y = pos), size = 5) +
     facet_wrap(reformulate(facet.var),scales = "free_y" ) + 
     theme(strip.text.x = element_text(size=16)) +
     theme(axis.text = element_text(colour = "blue",size = 16)) + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
     ggtitle(titl.str) + 
+    
     theme(plot.title = element_text(size = rel(3), colour = "blue"),
           axis.title.x = element_text(color="blue", size=20, face="bold"),
           axis.title.y = element_text(color="blue", size=20, face="bold")) +
@@ -91,5 +99,37 @@ plot.data<-function(main.dt,facet.var,freq.var2, titl.str) {
   
 }
 
-plot.data(dotsr, "LocationRespondent", "AgeC", 
-          "Survey Demographics by Location")
+plot.data(dotsr, "GeographyC", "EducationC", 
+          "Survey Education by Geography")
+
+
+# geo.edu.dt<-dotsr[, list(Frequency = length(ID)),by = c( "GeographyC","EducationC","GenderC")]
+# 
+# 
+# DataGE<- ddply(geo.edu.dt, .(GeographyC,EducationC), 
+#                transform, pos = cumsum(Frequency) - (0.5 * Frequency)
+# )
+# 
+# gg<-ggplot(DataGE, aes(x=EducationC,
+#                              y= Frequency )) +
+#   
+#   geom_bar(aes(fill = GenderC), stat="identity") +
+#   
+#   geom_text(aes(label = ifelse(Frequency >= 5,
+#                                Frequency,""), 
+#                 y = pos), size = 5) +
+#   facet_wrap(~GeographyC,scales = "free_y" ) + 
+#   theme(strip.text.x = element_text(size=16)) +
+#   theme(axis.text = element_text(colour = "blue",size = 16)) + 
+#   theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+#   ggtitle("test") + 
+#   
+#   theme(plot.title = element_text(size = rel(3), colour = "blue"),
+#         axis.title.x = element_text(color="blue", size=20, face="bold"),
+#         axis.title.y = element_text(color="blue", size=20, face="bold")) +
+#   scale_fill_brewer(palette="Accent") + 
+#   theme(legend.text = element_text(size = 16, colour = "blue")) +
+#   labs(x = "Age Category", y = "Respondents",size = 20, color = "blue")
+# 
+# print(gg)
+# 
