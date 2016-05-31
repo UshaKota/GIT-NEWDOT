@@ -101,57 +101,57 @@ names(dot.tech.sm.learn.full.dt) <- gsub("If.you.have.participated.an.online.cou
 
 names(dot.tech.sm.learn.full.dt) <- gsub("If.you.have.participated.an.online.course..what.did.you.think.of.it.....Would.you.seek.out.an.online.course.again..Why.or.why.not.", "seek.again.online.course", names(dot.tech.sm.learn.full.dt))
 
-# raw.vect2<-dot.tech.sm.learn.full.dt[(seek.again.online.course != "") & (Age.Range > 2), list(ID, GenderC, LocationRespondent,seek.again.online.course), by = AgeC]
-# temp2<-textProcessor(documents=raw.vect2$seek.again.online.course,metadata=raw.vect2)
-# raw2.vect2<-raw.vect2[seek.again.online.course != " "]
-# 
-# meta2<-temp2$meta
-# vocab2<-temp2$vocab
-# docs2<-temp2$documents
-# out2 <- prepDocuments(docs2, vocab2, meta2)
-# docs2<-out2$documents
-# vocab2<-out2$vocab
-# meta2 <-out2$meta
-# temp2<-NULL
-# 
-# 
-# seek.again.online.course.reason<- stm(out2$documents, out2$vocab, K = 5,prevalence =~ AgeC , content =~ AgeC,
-#                                     data = out2$meta, init.type = "Spectral")
-# 
-# png("WC-seek-again-online-course.png", width = 1200, height = 1000,res=150)
-# 
-# cloud(seek.again.online.course.reason, scale = c(3,1),colors=brewer.pal(6,"Dark2"))
-# 
-# dev.off()
-# 
-# png("Labels-seek-again-online-course.png", width = 1200, height = 1000,res=120)
-# #  
-# plot.STM(seek.again.online.course.reason, type = "labels", main= "reasons seek again or not an online course ",cex = 0.5)
-# 
-# dev.off()
-# 
-# 
-# png("Perspectives-prev-seek-again-online-course.png", width = 1200, height = 1200,res=200)
-# #  
-# plot.STM(seek.again.online.course.reason, type = "perspectives", topics = 5,main = "reasons to seek or not an online course",cex = 5)
-# 
-# dev.off()
-# 
-# 
-# 
-# prep <- estimateEffect(1:5 ~ AgeC , seek.again.online.course.reason,
-#                        meta = out2$meta, uncertainty = "Global")
-# png("Contrast-seek-online-course.png", width = 1500, height = 800,res=100)
-# 
-# plot.estimateEffect(prep, covariate = "AgeC", topics = c(1,3,5),
-#                     model = seek.again.online.course.reason, method = "difference",
-#                     cov.value1 = "25-30", cov.value2 = "31+",
-#                     xlab = "More 25-30 ... More 31+",
-#                     main = "Effect of Age on Vocab used",
-#                     xlim = c(-0.8, .5))
-# 
-# dev.off()
-# 
+raw.vect2<-dot.tech.sm.learn.full.dt[(Mobil.phone.learn != "") & (Mobil.phone.learn != " ") & (Mobil.phone.learn != "none")  & (Age.Range > 2), list(ID, GenderC, LocationRespondent,Mobil.phone.learn), by = AgeC]
+temp2<-textProcessor(documents=raw.vect2$Mobil.phone.learn,metadata=raw.vect2)
+
+meta2<-temp2$meta
+vocab2<-temp2$vocab
+docs2<-temp2$documents
+out2 <- prepDocuments(docs2, vocab2, meta2)
+docs2<-out2$documents
+vocab2<-out2$vocab
+meta2 <-out2$meta
+temp2<-NULL
+
+
+Mobil.phone.learn.stm<- stm(out2$documents, out2$vocab, K = 5,prevalence =~ AgeC , content =~ AgeC,
+                                    data = out2$meta, init.type = "Spectral")
+
+
+#png("WC-seek-again-online-course.png", width = 1200, height = 1000,res=150)
+
+cloud(Mobil.phone.learn.stm, scale = c(3,1),colors=brewer.pal(6,"Dark2"))
+
+#dev.off()
+
+#png("Labels-seek-again-online-course.png", width = 1200, height = 1000,res=120)
+#  
+plot.STM(Mobil.phone.learn.stm, type = "labels", main= "reasons seek again or not an online course ",cex = 0.5)
+
+dev.off()
+
+
+#png("Perspectives-prev-seek-again-online-course.png", width = 1200, height = 1200,res=200)
+#  
+plot.STM(Mobil.phone.learn.stm, type = "perspectives", topics = 5,main = "reasons to seek or not an online course",cex = 5)
+
+#dev.off()
+
+
+
+prep <- estimateEffect(1:5 ~ AgeC , Mobil.phone.learn.stm,
+                       meta = out2$meta, uncertainty = "Global")
+#png("Contrast-seek-online-course.png", width = 1500, height = 800,res=100)
+
+plot.estimateEffect(prep, covariate = "AgeC", topics = c(1,3,5),
+                    model = Mobil.phone.learn.stm, method = "difference",
+                    cov.value1 = "25-30", cov.value2 = "31+",
+                    xlab = "More 25-30 ... More 31+",
+                    main = "Effect of Age on Vocab used",
+                    xlim = c(-0.8, .5))
+
+#dev.off()
+
 ###############end of open-ended-responses for Q5######################
 
 #####################How often you use Internet for learning################

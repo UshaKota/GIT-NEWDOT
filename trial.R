@@ -53,6 +53,8 @@ dot.tech.gender.dt<-subset(dotsr,
 make.plot.dt<-function(main.dt, plot.var,freq.var2){
   plotting.dt<-main.dt[, list(Frequency = length(ID)),
                        by = c( plot.var,freq.var2, "GenderC")]
+  
+  #geom_bar(aes(y = (..count..)/sum(..count..)))
   return (plotting.dt)
   
 }

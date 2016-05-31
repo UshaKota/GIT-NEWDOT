@@ -1,0 +1,93 @@
+.vertnav-container {
+	border-top:1px solid #B0B1AB;
+	border-bottom:1px solid #B0B1AB;
+	padding-bottom:14px;
+	padding-left:2px;
+}
+	.vertnav-container ul {
+		list-style-type:none;
+		margin:0px;
+		padding:0px;
+	}
+	.vertnav-container h4.no-display {
+		display:none;
+	}
+	.vertnav-container span {
+		font-weight:bold;
+	}
+	.vertnav-container ul li.level1 span {
+		font-weight:normal;
+	}
+
+#vertnav {
+	list-style-type:none;
+}
+
+#vertnav li .vertnav-cat {
+	display:block;
+	font-size:12px;
+	line-height:14px;
+	padding-top:12px;
+	padding-right:10px;
+}
+
+#vertnav li a {
+	color:#6E6E6E;
+}
+
+#vertnav .inactive .vertnav-cat {
+}
+
+#vertnav .next .vertnav-cat {
+}
+
+#vertnav .prev .vertnav-cat {
+}
+
+#vertnav .first .vertnav-cat {
+}
+
+#vertnav .last .vertnav-cat {
+}
+
+#vertnav .only .vertnav-cat {
+}
+
+#vertnav li.parent .vertnav-cat {
+}
+
+#vertnav li.active .vertnav-cat {
+}
+
+#vertnav li.inactive .vertnav-cat {
+}
+
+#vertnav li.level0 .vertnav-cat {
+}
+
+#vertnav .level1 .vertnav-cat {
+	padding-left:10px;
+	font-size:11px;
+}
+
+#vertnav li.active a {
+	color:#000;
+}
+#vertnav li.active .inactive a {
+	color:#6E6E6E;
+}
+
+#vertnav li.active {
+	background-image:url(../images/vertnav-submenu-arrow.png);
+	background-repeat:no-repeat;
+	background-position:right 15px;
+}
+
+#vertnav li.level1 {
+}
+
+#vertnav .level2 .vertnav-cat {
+}
+
+#vertnav .level3 .vertnav-cat {
+}

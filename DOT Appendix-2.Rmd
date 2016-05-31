@@ -1,0 +1,403 @@
+---
+title: "Appendix2"
+author: "UshaKiran.Kota"
+date: "May 31, 2016"
+output: word_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+#10. Appendix
+
+## 10.1 Q-I Internet and Digital Tools Access and Use Frequencies
+
+### 10.1.1 Where do you most commonly use the devices you have access to
+
+```{r, echo=FALSE, warning=F,cache=T,fig.height=8,fig.width=12,dev_use_loc}
+
+
+
+plot.tech.data(dot.gen.dev.loc.dt, "use.at", "location.use.freq", "Device use location By Gender")
+
+
+mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at)),])
+
+
+dev.use.loc.tab<-xtabs(~use.at + GenderC , data = dot.gen.dev.loc.dt)
+# 
+summary(dev.use.loc.tab)
+
+
+mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at),as.factor(location.use.freq)) ,])
+
+set.seed(1004)
+
+pl<-xtabs(~use.at + location.use.freq + GenderC,data = dot.gen.dev.loc.dt)
+
+summary(pl)
+
+# cotabplot(pl, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+#           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+#                             varnames = FALSE),las = 2,
+#           text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+#           labeling_args = list(abbreviate_labs = c(8,6,1,1),
+#                                 rot_labels = c(0,0,90,0),
+#                                 just_labels=c("left","left","left","left")),
+#                                 gp_labels = gpar( fontsize = 14),pop = T)
+```
+
+
+### 10.1.2.How much access to do you have to the Internet?
+
+```{r, echo=F,fig.height=8,fig.width=12,anal_intrnt_acc,cache=T,warning=F}
+
+
+plot.tech.data(dot.gen.acc.intrnt.dt, "inrnt.on.device", "inrnt.dev.freq", "Internet Access  By Gender")
+
+
+mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.dev.freq)),])
+
+
+dev.acc.intrnt.tab<-xtabs(~inrnt.dev.freq + GenderC , data = dot.gen.acc.intrnt.dt)
+# 
+summary(dev.acc.intrnt.tab)
+
+
+mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.on.device),as.factor(inrnt.dev.freq)) ,])
+
+set.seed(2001)
+
+pInt<-xtabs(~inrnt.dev.freq + inrnt.on.device + GenderC,data = dot.gen.acc.intrnt.dt)
+
+summary(pInt)
+
+# cotabplot(pInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+#           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+#                             varnames = FALSE),las = 2,
+#           text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+#           labeling_args = list(abbreviate_labs = c(8,6,1,1),
+#                                 rot_labels = c(0,0,90,0),
+#                                 just_labels=c("left","left","left","left")),
+#                                 gp_labels = gpar( fontsize = 14),pop = T)
+```
+
+
+### 10.1.3.How often do you actually use the Internet?
+
+```{r,echo=F,fig.height=8,fig.width=12,intrnt_use,cache=T,warning=F}
+
+plot.tech.data(dot.gen.use.intrnt.dt, "intrnt.use.on.dev", "intrnt.on.dev.use.freq", "Internet use  By Gender")
+
+
+mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.on.dev.use.freq)),])
+
+
+dev.use.intrnt.tab<-xtabs(~intrnt.on.dev.use.freq + GenderC , data = dot.gen.use.intrnt.dt)
+# 
+summary(dev.use.intrnt.tab)
+
+
+mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.use.on.dev),as.factor(intrnt.on.dev.use.freq)) ,])
+
+set.seed(2701)
+
+pUInt<-xtabs(~intrnt.on.dev.use.freq + intrnt.use.on.dev + GenderC,data = dot.gen.use.intrnt.dt)
+
+summary(pUInt)
+
+# cotabplot(pUInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+#           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+#                             varnames = FALSE),las = 2,
+#           text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+#           labeling_args = list(abbreviate_labs = c(8,6,1,1),
+#                                 rot_labels = c(0,0,90,0),
+#                                 just_labels=c("left","left","left","left")),
+#                                 gp_labels = gpar( fontsize = 14),pop = T)
+```
+
+### 10.1.4.Where do you most commonly use the Internet?
+
+```{r,echo=F,fig.height=8,fig.width=12,intrnt_use_loc,cache=T,warning=F}
+
+
+plot.tech.data(dot.gen.use.intrnt.loc.dt, "intrnt.use.loc", "intrnt.use.loc.freq", "Location of Internet use  By Gender")
+
+
+mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc)),])
+
+
+dev.use.intrnt.loc.tab<-xtabs(~intrnt.use.loc + GenderC , data = dot.gen.use.intrnt.loc.dt)
+# 
+summary(dev.use.intrnt.loc.tab)
+
+
+mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc),as.factor(intrnt.use.loc.freq)) ,])
+
+set.seed(2879)
+
+pLocInt<-xtabs(~intrnt.use.loc + intrnt.use.loc.freq + GenderC,data = dot.gen.use.intrnt.loc.dt)
+
+summary(pUInt)
+
+# cotabplot(pLocInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+#           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+#                             varnames = FALSE),las = 2,
+#           text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+#           labeling_args = list(abbreviate_labs = c(8,6,1,1),
+#                                 rot_labels = c(0,0,90,0),
+#                                 just_labels=c("left","left","left","left")),
+#                                 gp_labels = gpar( fontsize = 14),pop = T)
+
+```
+
+### 10.1.5.What digital services/tools do you have access to?
+
+```{r,echo=F,cache=T,warning=F,fig.height=8,fig.width=12,digi_tools_acc}
+
+plot.tech.data(dot.gen.acc.digi.dt, "tool.ser.dig", "frq.ac.dig", "Digital Tools Access  By Gender")
+
+
+mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig)),])
+
+
+dig.tools.acc.tab<-xtabs(~tool.ser.dig + GenderC , data = dot.gen.acc.digi.dt)
+# 
+summary(dig.tools.acc.tab)
+
+
+mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig),as.factor(frq.ac.dig)) ,])
+
+set.seed(28891)
+
+pdigAc<-xtabs(~tool.ser.dig + frq.ac.dig + GenderC,data = dot.gen.acc.digi.dt)
+
+summary(pdigAc)
+
+# cotabplot(pdigAc, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+#           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+#                             varnames = FALSE),las = 2,
+#           text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+#           labeling_args = list(abbreviate_labs = c(8,6,1,1),
+#                                 rot_labels = c(0,0,90,0),
+#                                 just_labels=c("left","left","left","left")),
+#                                 gp_labels = gpar( fontsize = 14),pop = T)
+
+
+```
+
+### 10.1.6.Where do you most commonly use digital services?
+
+```{r,echo=F,fig.height=8,fig.width=12,digi_tools_use_loc,cache=T,warning=F}
+
+plot.tech.data(dot.gen.loc.digi.dt, "digi.loc.of.use", "at.loc.digi.use.freq", "Location of Digital tools use ~ Gender")
+
+
+mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use)),])
+
+
+dig.loc.use.tab<-xtabs(~digi.loc.of.use + GenderC , data = dot.gen.loc.digi.dt)
+# 
+summary(dig.loc.use.tab)
+
+
+mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use),as.factor(at.loc.digi.use.freq)) ,])
+
+set.seed(00221)
+
+pdiglocU<-xtabs(~digi.loc.of.use + at.loc.digi.use.freq + GenderC,data = dot.gen.loc.digi.dt)
+
+summary(pdiglocU)
+
+# cotabplot(pdiglocU, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+#           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+#                             varnames = FALSE),las = 2,
+#           text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+#           labeling_args = list(abbreviate_labs = c(8,6,1,1),
+#                                 rot_labels = c(0,0,90,0),
+#                                 just_labels=c("left","left","left","left")),
+#                                 gp_labels = gpar( fontsize = 14),pop = T)
+# 
+# 
+# 
+# 
+# 
+
+
+```
+
+## 6.8 How often do you use any electronic devices for the following work related activities
+
+```{r,echo=F,warning=F,results="hide",fig.width=12,fig.height=8,edev-wk }
+
+#create the frequency table
+work.freq = matrix(c("Very.often","Often","Somewhat.often",
+                     "Not.very.often","Never" ,"I.don.t.know"),ncol = 1, byrow =T)
+
+
+freq.of.work<-as.table(work.freq)
+
+work = matrix(c( "Word.processing",
+                 "To.manage.budgets",
+                 "Business.communication",
+                 "Task.management", 
+                 "Project.planning",
+                 "Scheduling", 
+                 "Keeping.track.of.how.many.hours.I.work",
+                 "Communicating.with.coworkers",
+                 "To.keep.track.of.my.income", 
+                 "SMS..text.messaging.",
+                 "Phone.calls.for.work"),ncol=1,byrow=T)
+work.type<-as.table(work)
+
+
+#basic clean up of variable names
+
+dot.youth.work.edev.dt<-subset(dot.tech.sm.work.full.dt, select = grepl("ID|Gender|Age|Location|Geo|How.often.do.you.use.any.electronic.devices.for.the.following.work.related.activities....", names(dot.tech.sm.work.full.dt)))
+
+names(dot.youth.work.edev.dt) <- gsub("How.often.do.you.use.any.electronic.devices.for.the.following.work.related.activities....", "acti.type.time.", names(dot.youth.work.edev.dt))
+#one.youth.act.case.m00<-dot.youth.work.edev.dt[ID ==43675088 ,]
+
+
+#reshape the subset
+cols.1 <-colnames(dot.youth.work.edev.dt)[grep("acti.type.time.",names(dot.youth.work.edev.dt))]
+
+dot.youth.work.edev.dt.m<-data.table(melt(dot.youth.work.edev.dt,measure.vars = cols.1 ,
+                                          variable.name = "act.type.freq", value.name = "act.freq"))
+one.youth.act.case.m0<-dot.youth.work.edev.dt.m[ID ==43675088 , list(act.type.freq,act.freq)]
+
+#http://stackoverflow.com/questions/28230360/using-grepl-in-r-to-match-string
+dot.youth.work.edev.dt.m$work = apply(dot.youth.work.edev.dt.m, 1, function(u){
+  bool = sapply(work.type[,1], function(x) grepl(x, u[['act.type.freq']]))
+  if(any(bool)&(!is.na(u[['act.freq']]))) work.type[bool] else NA
+})
+
+# 
+# #add access.freq column
+# 
+dot.youth.work.edev.dt.m$work.freq = apply(dot.youth.work.edev.dt.m, 1, function(u){
+  bool = sapply(freq.of.work[,1], function(x) grepl(x, u[['act.type.freq']]))
+  if(any(bool) & (!is.na(u[['act.freq']]))) freq.of.work[bool] else NA
+})
+#one.youth.act.case.m<-dot.youth.work.edev.dt.m[ID ==43675088 , list(work,work.freq)]
+
+# #remove the measure cols and value cols from dcast formula
+id.cols.work.m <- colnames(dot.youth.work.edev.dt.m)[-grep("act.type.freq|act.freq",names(dot.youth.work.edev.dt.m))]
+
+f <- as.formula(paste(paste(id.cols.work.m, collapse = " + "), "~ act.type.freq"))
+
+dot.youth.work.edev.dt<-data.table(dcast(data =dot.youth.work.edev.dt.m[!is.na(act.freq),], f, value.var = "act.freq",function(x) length(unique(x))))
+
+dot.youth.work.edev.dt.m<-NULL
+
+dot.youth.work.edev.dt<-dot.youth.work.edev.dt[, which(grepl("acti.type.time.", colnames(dot.youth.work.edev.dt))):=NULL]
+one.youth.case<-dot.youth.work.edev.dt[ID ==43675088 , list(work,work.freq)]
+#
+id.cols.work.m<-NULL
+f<-NULL
+
+```
+## 6.9 How often do you use the Internet for the following activities?
+
+
+```{r,echo=F,warning=F,results="hide",fig.width=12,fig.height=8,int_for_wk}
+
+ #Internet.for.acti.
+ internet.for.actvts<-matrix(c("To.communicate.with.my.coworkers",
+                               "Research.related.to.my.job",
+                               "Research.to.improve.my.job.performance", 
+                               "Connecting.with.others.in.my.field",
+                               "Connecting.with.mentors",
+                               "Training.for.my.job",
+                               "To.track.my.performance.and.or.hours.worked",
+                               "To.communicate.with.customers.or.clients",
+                               "To.plan.events.for.work", 
+                               "Accessing.professional.development.resources",
+                               "Learning.for.professional.development",
+                               "To.apply.for.jobs"  ),ncol=1,byrow=T)
+ 
+ intrnt.for.actvts<-as.table(internet.for.actvts)
+ 
+ dot.youth.intrnt.act.dt<-subset(dot.tech.sm.work.full.dt, select = grepl("ID|Gender|Age|Location|Geo|How.often.do.you.use.the.Internet.for.the.following.activities....", names(dot.tech.sm.work.full.dt)))
+ 
+ names(dot.youth.intrnt.act.dt) <- gsub("How.often.do.you.use.the.Internet.for.the.following.activities....", "Internet.for.acti.", names(dot.youth.intrnt.act.dt))
+ one.youth.intrnt.case.m00<-dot.youth.intrnt.act.dt[ID ==43675088 ,]
+ 
+ 
+ #reshape the subset
+ cols.2 <-colnames(dot.youth.intrnt.act.dt)[grep("Internet.for.acti.",names(dot.youth.intrnt.act.dt))]
+ 
+ dot.youth.intrnt.act.dt.m<-data.table(melt(dot.youth.intrnt.act.dt,measure.vars = cols.2 ,
+                                           variable.name = "intrnt.fol.act", value.name = "intrnt.act.freq"))
+ one.youth.intnt.act.case.m0<-dot.youth.intrnt.act.dt.m[ID ==43675088 , list(intrnt.fol.act,intrnt.act.freq)]
+ 
+#  #http://stackoverflow.com/questions/28230360/using-grepl-in-r-to-match-string
+ dot.youth.intrnt.act.dt.m$use.intrnt.act = apply(dot.youth.intrnt.act.dt.m, 1, function(u){
+   bool = sapply(intrnt.for.actvts[,1], function(x) grepl(x, u[['intrnt.fol.act']]))
+   if(any(bool)&(!is.na(u[['intrnt.act.freq']]))) intrnt.for.actvts[bool] else NA
+ })
+ 
+ # 
+ # #add access.freq column
+ # 
+ dot.youth.intrnt.act.dt.m$act.freq.with.intrnt = apply(dot.youth.intrnt.act.dt.m, 1, function(u){
+   bool = sapply(freq.of.work[,1], function(x) grepl(x, u[['intrnt.fol.act']]))
+   if(any(bool) & (!is.na(u[['intrnt.act.freq']]))) freq.of.work[bool] else NA
+ })
+ one.youth.intnt.case.m<-dot.youth.intrnt.act.dt.m[ID ==43675088 , list(use.intrnt.act,act.freq.with.intrnt)]
+ 
+#  # #remove the measure cols and value cols from dcast formula
+ id.cols.intrnt.m <- colnames(dot.youth.intrnt.act.dt.m)[-grep("intrnt.act.freq|intrnt.fol.act",names(dot.youth.intrnt.act.dt.m))]
+ 
+ f <- as.formula(paste(paste(id.cols.intrnt.m, collapse = " + "), "~ intrnt.fol.act"))
+ 
+ dot.youth.intrnt.act.dt<-data.table(dcast(data =dot.youth.intrnt.act.dt.m[!is.na(intrnt.act.freq),], f, value.var = "intrnt.act.freq",function(x) length(unique(x))))
+ 
+ dot.youth.intrnt.act.dt.m<-NULL
+ 
+ dot.youth.intrnt.act.dt<-dot.youth.intrnt.act.dt[, which(grepl("Internet.for.acti.", colnames(dot.youth.intrnt.act.dt))):=NULL]
+ one.youth.inrnt.case<-dot.youth.intrnt.act.dt[ID ==43675088 , list(use.intrnt.act,act.freq.with.intrnt)]
+ #
+ id.cols.intrnt.m<-NULL
+ f<-NULL
+ 
+```
+
+
+**What other ways you use the Internet for work?**
+
+**What digital services or tools do you use for work?**
+
+**What is your favourite digital service or tool for informal work**
+
+**In what ways do you use devices to generate an income?**
+
+**In what ways do you use the Internet to generate an income?**
+
+**If you use the Internet to generate an income, how did you first learn about the opportunity?**
+
+**In what ways do you see your friends and/or peers using theInternet to generate an income?**
+
+**In what ways do you use digital services/tools to generate an income**
+
+**In what ways do you see your friends and/or peers using the digital services/tools to generate an income? come?**
+
+**What is the best way you know of to generate an income using technology, the Internet, or digital services/tools?**
+
+**If you or someone you know does online work to generate an income, how did you/they connect to that opportunity?**
+
+

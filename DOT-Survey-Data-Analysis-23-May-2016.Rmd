@@ -2,40 +2,33 @@
 title: "DOT Survey Data Analysis"
 author: "UshaKiran.Kota"
 date: "May 23, 2016"
-output: 
-  word_document: 
+output:
+  pdf_document: default
+  word_document:
     fig_caption: yes
     highlight: pygments
-    
-
 ---
 
-# Coursolve/Need230  : DOT Data Analysis
-
-
-## Part 1 -Introduction
+# 1.Coursolve/Need230  : DOT Data Analysis Digital Internship
 
 
 Digital Opportunity Trust (DOT)(ref://https://www.dotrust.org) is a leading international social enterprise headquartered in Ottawa, Canada with local operations around the globe. 
-DOT mobilizes youth the talent and energy helping them to develop both an entrepreneurial spirit and technology and business skills that will last a lifetime. Young people are encouraged to become leaders of change as they facilitate technology, business, and entrepreneurial learning experiences to people in their own communities.
 
-DOT's unique youth-led programs empower people living in communities that are developing, in transition, or under stress with the confidence to use technology for entrepreneurial, community, educational, and personal development. 
+*DOT mobilizes youth the talent and energy helping them to develop both an entrepreneurial spirit and technology and business skills that will last a lifetime. Young people are encouraged to become leaders of change as they facilitate technology, business, and entrepreneurial learning experiences to people in their own communities.*
 
-_In September 2015, twenty youth from Kenya, Rwanda, Ethiopia, Uganda, Tanzania, Lebanon, and Indigenous Canada embarked on a project to survey their peers about how they are using technology and social media for work, income, learning, leadership, and employment. 580 youth from urban, peri-urban, and rural areas were surveyed through face-to-face qualitative and quantitative interviews.
+In September 2015, twenty youth from Kenya, Rwanda, Ethiopia, Uganda, Tanzania, Lebanon, and Indigenous Canada embarked on a project to survey their peers about how they are using technology and social media for work, income, learning, leadership, and employment. 580 youth from urban, peri-urban, and rural areas were surveyed through face-to-face qualitative and quantitative interviews.
 
-The result of this survey is a raw dataset of 580 responses and more than 1600 variables , 
+The result of this survey is a raw dataset of 567 responses for over 1500 collection of questions. Coursolve/Need230 is a short term project to analyse:
 
-Coursolve/Need230 is a short term project to analyse:
+**How are youth in Kenya, Rwanda, Ethiopia, Uganda, Tanzania, Lebanon, and Indigenous Canada  using technology and social media for work, income, learning, leadership, and employment?**
 
-How are youth in Kenya, Rwanda, Ethiopia, Uganda, Tanzania, Lebanon, and Indigenous Canada  using technology and social media for work, income, learning, leadership, and employment?
+DOT provided the team with a Raw Survey responses.xlsx as an input data for the exploratory and quantitative Analysis and expects the collaborators to find answers for some or all of the below research questions 
 
-DOT provided the team with a Raw Survey responses.xlsx as an input data for the exploratory Analysis and expects to find answers for some or all of the below questions from the results of Need230
 
-### Document Purpose
+## 1.1 Coursolve Need230/DOT Data Analysis - Research Questions
 
-The purpose of this document is describe one of the several methods of how to handle dataset of large number of categorical variables to reduce the dimensions of the data set for ease of exploration for research questions
+As part of need230, DOT is interested in the analysis of following research questions using DOT's survey data
 
-### Need230/DOT Data Analysis - Research Questions
 1.How does access to technology vary by gender?
 
 2.How does use of social media for work, income, learning, leadership, and employment vary by gender?
@@ -52,47 +45,71 @@ The purpose of this document is describe one of the several methods of how to ha
 
 8.How are young people gaining and/or participating in formal or informal employment using technology and social media?
 
+## 1.2 Document Purpose
 
-## Justification 
-DOT intends to learn more about how our key stakeholder group (youth in the identified countries) are benefitting from technology and social media in the areas of employment, entrepreneurship, learning, and leadership.
-
-DOT will use the results of Need230 to inform program and project design, as well as implementation strategies. 
+The purpose of this document is to present a summary of Data analysis and visualizations performed on sample questions (**use cases**) of DOT survey data to provide useful insights for future research.
 
 This document is intended to present analysis for Questions 1, 3, 5 from the above list of research questions
 
-### 1.Survey Data Insights
 
-This section summarises the understanding of Survey Data
+## 1.3 Justification 
 
+DOT intends to learn more about how youth in the identified countries, are benefitting from technology and social media in the areas of employment, entrepreneurship, learning, and leadership.
 
-####  1.Populations and samples
+DOT will use the results from Need230 to inclue them as part of program and project design, and as well as in their implementation strategies. 
+
+# 2.Executive Summary
+
+As part of Coursolve need 230, DOT sought response to atleast 3 of research questions. Each of these 3 research questions is a group of questions that elicit response over technology access and use related within social environment of target population.
+
+This section describes the approach for data analysis and Exploratory analyses and Statistical analyses that will be peformed on the DOT survey Data.
+
+The purpose of the research is to provide useful insights about the Youth in the selected countries on how they leverage on technology for their professional and entreprenueral growth. Survey data is analysed with the help of Exploratory views, Qualitative comments and appropriate quantitative methods
+
+DOT survey is a collection of responses for survey Questions related to access and use of technology for the activities that the youth are associated with . Response variables are related to the access and use of technology by youth within their social status.
+
+Since the data are nominal categorical in nature with multi-level outcomes that vary across sample sizes,  it will be appropriate to assume that "point estimates" (mean , equal variance), and ranges for summary statistics vary a lot and estimates of normal distribution do not hold. Since the study is observational, showing any associations within the response and explanatory variables is considered sufficient.
+
+Exploratory methods such as stacked bar plots, mosaic plots and contingency tables are used visualize the data and any associations within groups or between groups of samples. The methods employed for analysis include useful control variables such as *Gender* , *Age* and *Location* of the respondent wherever they are appropriate
+
+Quanitative analysis is conducted primarily for test of independence from the control variable.Since the sample sizes with multi-level responses are large enough,   **Pearson's chi-squared test** is a suitable choice for test for independence between the Gender of respondents and their response for technology access or use.
+
+Comparing row and column proportions, computing contingency ratios are also assumed to be applicable tests and effective incase of response variables with nominal outcomes.
+
+Research Questions 3 and 5 elicit response in the form of  "open ended text". Exploratory views such as Wordclouds and Latent Topics are  included as part of the text analysis tools in these cases.
+
+All the plots and statistical test results in this document are performed using R statistical Software programming language.
+
+# 3. Survey Data Insights
+
+DOT team provided the collaborators on Coursolve need230 a clean data set with the response captured by their research team.This section summarises the understanding of Survey Data
+
+## 3.1.Nature of Survey
+
+DOT data is assumed to be a propsective observational study conducted with structured sampling strategies.
+
+## 3.2 Populations and samples
 
 The target population in the DOT survey report is youth of different age categories who belong to Canada , Sub sahara countries of Africa and Lebanon, well stratifies by Age, Gender and Location 
 The data consists of 568 respondents randomly sampled from the target locations and by Age, Gender forming a well representaion of stratified sampled data. Hence it is reasonable to assume that the estimates on the sample cases will be unbiased
  
-DOT research team conducted a prospective observational study,  with a cohort of 568 individuals and responses collected over 1500 features. Hence it is intended to check for any evidence of association between the features over which the  data was collected
+DOT research team conducted a prospective observational study,  with a cohort of 568 individuals and responses collected over 1500 features. Hence it is intended to check for any evidence of association between the features over which the  data was collected. Each row of data represents a case of 1539 features. The total number of cases are 568
 
-Ref:https://onlinecourses.science.psu.edu/stat504/book/export/html/102
+DOT Data is a collection of responses over features that are dichotmous ( binary, nominal and categorical (multi-level responses)) type, collected from each respondent. Data also includes variable that elicit  open-ended responses to questions from the researcher
 
-Each row of data represents a case of 1539 features. The total number of cases are 568
-DOT Data is a collection of responses over features that are dichotmous ( binary, nominal and categorical (multi-level responses)) type, collected from each respondent.
-Data also includes variable that elicit  open-ended responses to questions from the researcher
-#### 3. Respondent Demographics View
+## 3.3. Assumptions on Conditions
+
+The following assumptions are made on conditions for independence
 
 
-#### 2.Data Handling
+### 3.3.1 Observations are independent. 
 
-This section describes how the data is organised for exploratory and inferential analysis.
+The survey is conducted a stratified simple random sample and consists of fewer than 10% of the youth population, which establises independence,both within the data and  between each subsets of data.
 
-For a majority of categorical multi-level variables, Data is organanized to individual subsets for each set of explanatory and response variables. this ensures a Multinomial sampling with fixed samples sizes, stratified by different variables. Cross tabulation of multi-way (minimum of 3 dimensions) is a chosen as a perferred method to study any association between the chosen features
+### 3.3.2 Success-failure condition. 
 
-Data cleaning up process comprised of the foll:
+Although the sample size is failry large data of 567 cases, since response data has multiple outcomes, the distribution of outcomes is expected to follow a multinomial  distribution.
 
-1. creating segmented data sets for variables of analysis 
-2. shortening variables names by length and or replace for convenient handling with the software
-3. reshaping the data to group the appropriate variable for each survey question within the chosen research Questions for analysis 
-
-###
 
 ```{r, echo=FALSE, load_library, echo=F, warning=F, message=F}
 library(data.table)
@@ -110,8 +127,32 @@ library(MASS)
 library(FactoMineR)
 library("factoextra")
 library(corrplot)
+library(foreign) #for multinomial regression
+library(nnet) #for multinomial regression
+library(corrplot)
+library(ggplot2)
+library (stm) #for open ended-text survey responses
+library(RColorBrewer)
+
 
 ```
+
+## 3.4 Data Handling
+
+This section describes how the data is organised for exploratory and inferential analysis.
+
+### 3.4.1 Missing Data
+
+DOT data set had fewer (19) NA cases w.r.t demographic features. These were dropped from the data because such data would not be useful for analysis, The data among the survey features is treated as a large sparse matrix
+
+For a majority of categorical multi-level variables, Data is organanized to individual subsets for each set of explanatory and response variables. this ensures a Multinomial sampling with fixed samples sizes, stratified by different variables. Cross tabulation of multi-way (minimum of 3 dimensions) is a chosen as a perferred method to study any association between the chosen features
+
+Data cleaning up process comprised of the foll:
+
+1. creating segmented data sets for variables of analysis 
+2. shortening variables names by length and or replace for convenient handling with the software
+3. reshaping the data to group the appropriate variable for each survey question within the chosen research Questions for analysis 
+
 
 ```{r, read_data_cache, echo=F, warning=F, message=F,results='hide'}
 
@@ -165,7 +206,22 @@ print(head(dotsr[1:5,1:21,with = F]))
 
 
 ```
-#### 3.Exploratory View of Demographics
+
+# 4.Survey Demographics
+
+The sections below describe the respondents'demographics with help of appropriate plots.
+
+# 4.1 Qualitative Analysis
+
+1. The proportion of female respodents is higher than males in most of the sampled locations, with Kenya and Rwanda being exceptions
+
+2. The count of respondents from Canada is lower than rest of the countries
+
+3. Respondents from Urban regions are surveyed more than rural and peri-urban
+
+4. Respondents from Urban regions seem to be mostly university graduates, while from rural are mostly secondary school grads
+
+5. University grad  female students are also seen are more in proportions as compared to male stundent in the employed and unemployed segement. 
 
 ```{r, DOT_demographics, cache=T,fig.height=8, fig.width=14,echo=F,results = 'hold',warning=F}
 
@@ -203,16 +259,16 @@ plot.data<-function(main.dt,facet.var,freq.var2, titl.str) {
                   y = pos), size = 5) +
     facet_wrap(reformulate(facet.var),scales = "free_y" ) + 
     theme(strip.text.x = element_text(size=16)) +
-    theme(axis.text = element_text(colour = "blue",size = 16)) + 
+    theme(axis.text = element_text(colour = "blue",size = 14)) + 
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
     ggtitle(titl.str) + 
     
     theme(plot.title = element_text(size = rel(3), colour = "blue"),
-          axis.title.x = element_text(color="blue", size=20, face="bold"),
-          axis.title.y = element_text(color="blue", size=20, face="bold")) +
+          axis.title.x = element_text(color="blue", size=14, face="bold"),
+          axis.title.y = element_text(color="blue", size=14, face="bold")) +
     scale_fill_brewer(palette="Accent") + 
-    theme(legend.text = element_text(size = 16, colour = "blue")) +
-    labs(x = "Age Category", y = "Respondents",size = 20, color = "blue")
+    theme(legend.text = element_text(size = 14, colour = "blue")) +
+    labs(x = "Age Category", y = "Respondents",size = 14, color = "blue")
   
   print(gg)
   
@@ -226,14 +282,14 @@ plot.data(dotsr, "LocationRespondent", "AgeC",
 plot.data(dotsr, "GeographyC", "AgeC", 
           "Survey Demographics by Geography")
 
-plot.data(dotsr, "EducationC", "AgeC", 
-          "Survey Demographics by Education")
+# plot.data(dotsr, "EducationC", "AgeC", 
+#           "Survey Demographics by Education")
+# 
+# plot.data(dotsr, "EmploymentC", "AgeC", 
+#           "Survey Demographics by Employment")
 
-plot.data(dotsr, "EmploymentC", "AgeC", 
-          "Survey Demographics by Employment")
-
-plot.data(dotsr, "OccupationC", "AgeC", 
-          "Survey Demographics by Occupation")
+# plot.data(dotsr, "OccupationC", "AgeC", 
+#           "Survey Demographics by Occupation")
 
 plot.data(dotsr, "GeographyC", "EducationC", 
           "Survey Demographics of Education by Geography")
@@ -251,45 +307,22 @@ dot.tab7<-table(dotsr$GeographyC,dotsr$EmploymentC)
 
 
 print("2-way Contingency table: varying by Gender and Age")
-prop.table(dot.tab1,1)
+head(prop.table(dot.tab1,1))
 
 print("2-way Contingency table: varying by Gender and Education")
-prop.table(dot.tab2,1)
+head(prop.table(dot.tab2,1))
 
 print("2-way Contingency table: varying by Gender and Employment status")
-prop.table(dot.tab3,1)
+head(prop.table(dot.tab3,1))
 
-print("2-way Contingency table: varying by Gender and OccupationC")
-prop.table(dot.tab4,1)
-
-prop.table(dot.tab6,2)
-
-prop.table(dot.tab7,2)
+# print("2-way Contingency table: varying by Gender and OccupationC")
+# head(prop.table(dot.tab4,1))
 
 
 ```
-#### 5.Executive Summary
-
-As part of the need 230, DOT sought response to atleast 3 of research questions. Each of these 3 research questions is a group of questions that elicit response over technology access and use related within social environment of target population.
-
-This section describes the approach for data analysis and Exploratory analyses and Statistical analyses that will be peformed on the DOT survey Data.
-
-The purpose of the research is to provide useful insights about the data with the help of Exploratory views, Qualitative comments and results of Inferential analysis on selected data sets
-Apart from the demographics of the respondents, DOT survey is a collection of responses for survey Questions related to access and use of technology for the activities that the youth are associated with . Response variables are related to the access and use of technology by youth within their living (to change this word) context.
-
-Basic assumptions about conditions of indenpendence and randomness within group are made while analysing the data, Since the data are nominal categorical in nature,  it will be appropriate to use "point estimates", and ranges for summary statistics.
-
-Exploratory methods such as stacked bar plots, mosaic plots and contingency tables will be used visualize the data and any associations within groups or between groups of data.
-
-Since the sample sizes with multi-level responses are large enough, we can test for independence between the Gender of respondents and their response for technology choice using a **Pearson's chi-squared test**, which will be  performed on selected data sets for the sub group of questions.
-Regression analysis is also performed on selected data sets to check the linear-log linear variability among the response/explanatory variables
-
-Research Questions 3 and 5 elicit response in the form of  "open ended text". Exploratory views such as Wordclouds and Latent Topics will be included as part of the text analysis process in these cases.  Document to Topic associations will be illustrated with suitable plots that provide insights into the latent topics  discussed by the respondents
-
-All the plots and statistical test results in this document are performed using R statistical Software programming language.
 
 
-### Research Question I
+# 5. Research Question-I Analysis
 
 Research Question I is **"How does access to technology vary by Gender"**
 THis question has response data within collection of following sub set of questions :
@@ -308,7 +341,7 @@ THis question has response data within collection of following sub set of questi
 **What digital services/tools do you have access to?**
 
 **Where do you most commonly use digital services?**
-#
+
 
 The Question I seeks to answer in the form of investigation for any significant association between Gender of the respondents and access to technology grouped  under :
 
@@ -957,7 +990,8 @@ f <- NULL
 
 ```
 
-```{r, echo=FALSE, warning=F,caceh=T,plot_freq_tech,fig.height=12, fig.width=16}
+```{r, echo=FALSE, warning=F,caceh=T,plot_freq_tech,fig.height=10, fig.width=14}
+
 #https://select-statistics.co.uk/blog/analysing-categorical-data-using-logistic-regression-models/
 
 make.plot.tech.dt<-function(sub.dt, facet.var,tech.use.acc.freq.var){
@@ -1000,16 +1034,16 @@ plot.tech.data<-function(sub.dt,facet.var,tech.use.acc.freq.var, titl.str) {
                   size = 5) +
     
       facet_wrap(reformulate(facet.var),scales = "free_y" ) +
-      theme(strip.text.x = element_text(size=20)) + 
-      theme(axis.text = element_text(colour = "blue",size = 16)) + 
+      theme(strip.text.x = element_text(size=14)) + 
+      theme(axis.text = element_text(colour = "blue",size = 14)) + 
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
       ggtitle(titl.str) +
       theme(plot.title = element_text(size = rel(3), colour = "blue"),
             axis.title.x = element_text(color="blue", size=20, face="bold"),
             axis.title.y = element_text(color="blue", 
-                                        size=30, face="bold")) +
-      theme(legend.text = element_text(size = 16, colour = "blue")) +
-      labs(x = "Frequency Category", y = "Frequency",size = 20, 
+                                        size=14, face="bold")) +
+      theme(legend.text = element_text(size = 14, colour = "blue")) +
+      labs(x = "Frequency Category", y = "Frequency",size = 14, 
            color = "blue") +
       scale_fill_brewer(palette= "Set3")  
         
@@ -1020,348 +1054,465 @@ plot.tech.data<-function(sub.dt,facet.var,tech.use.acc.freq.var, titl.str) {
 
 mca.plot<-function(ca.dt){
   res.ca <- MCA(ca.dt, graph = F)
-  fviz_mca_var(res.ca, labelsize = 6, pointsize = 4,col.var = "contrib")
+  fviz_mca_var(res.ca, labelsize = 8, pointsize = 4,col.var = "contrib")
 
 }
-#dot.gen.acc.dev.dt
-# dot.gen.use.dev.dt
-# dot.gen.dev.loc.dt
-# dot.gen.acc.intrnt.dt
-# dot.gen.use.intrnt.dt
-# dot.gen.use.intrnt.loc.dt
-# dot.gen.acc.digi.dt
-# dot.gen.loc.digi.dt
 
 ```
-#### 1. What devices do you have access to?
+
+## 5.1.What devices do you have access to?
+
+In this section we investigate for any assoication between the device that is accessed by the respondent and the respondernt's gender.
+
+The bar plot below illustrates the devices accessed by the respondents of each category(Male/Female)
+
+A correspondence analysis plot below displays Device association with the gender if any. An Independence test is conducted to check for the assoication.
 
 
-```{r, anal-dev-acc-by-gender, echo = F, warning=F, cache = T,fig.height = 8,fig.width=14}
+```{r, dev_acc, echo = F, warning=F, cache = T,fig.height = 8,fig.width=14}
 
 plot.tech.data(dot.gen.acc.dev.dt, "device", "dev.avail.freq", "Device Access By Gender")
 
 
-print("Is there an association between respondent's Gender and device accessed ?")
+mca.plot(dot.gen.acc.dev.dt[,list(as.factor(GenderC), as.factor(device), as.factor(dev.avail.freq)),])
 
-print("The response variable here is the device and the explanatory variable is Gender")
-
-print("A simpler - Chi.Square test should be sufficient to test for Independence")
 dev.acc.tab1<-xtabs(~device + GenderC, data = dot.gen.acc.dev.dt)
 kable(prop.table(dev.acc.tab1,1))
 summary(dev.acc.tab1)
 
-
-mca.plot(dot.gen.acc.dev.dt[,list(as.factor(GenderC), as.factor(device), as.factor(dev.avail.freq)),])
-
 ```
+In the contingency table aboce Observe that the female to male proportions along the columns do not vary indicating that device alone may not have any assoication with device user's gender.However the row profiles show a slight variation across the gender category, leaving a scope for exploring for any statistically significant assoication with the access frequencies of devices. 
 
-#### 2. How often do you actually use these devices?
+The corresponding analysis plot above shows that both male and female respondents are having an access to a Smartphone  multiple times, basic mobile phone every and laptop once a month. Not many respondents not seem to have a frequent access Desktop or a Laptop. The CA factor analysis plot is able to capture about only 19% of association, again leaving a scope for exploring for other contributors, that can be dummy coded into the table.
+We use this point in the next question where device name is also included into the crosstabulation test.
+
+To interpret this plot, the closer two points of the same type are, the more similar those two row / column profiles are. And the closer two points of different types are, the more of their probability mass is in the cell representing their intersection.
 
 
-```{r, echo=FALSE,anal-dev-use-by-gender, warning=F,cache=T,fig.height = 8,fig.width=14}
+
+## 5.2.How often do you actually use these devices?
+
+```{r, dev-use-gen,echo=FALSE, fig.height=6, fig.width=14,warning=F,cache=T}
 
 plot.tech.data(dot.gen.use.dev.dt, "device.use", "use.dev.freq", "Device use By Gender")
 
-mca.plot(dot.gen.use.dev.dt[,list(as.factor(GenderC), as.factor(device.use), as.factor(use.dev.freq)),])
+dev.use.tab1<-xtabs(~use.dev.freq + GenderC , data = dot.gen.use.dev.dt)
+
+kable(prop.table(dev.use.tab1,1))
+
+summary(dev.use.tab1)
+
+
+mca.plot(dot.gen.use.dev.dt[,list(as.factor(GenderC), as.factor(use.dev.freq))])
+
+
+```
+
+The contingency table shows noticeable variations across row and column profiles indicating possible association between rows (device use frequencies) and columns (Gender category)
+We explore this further with a CA plot , association mosaic plot and conduct an Independence test on the data.
+
+The corresponding analysis plot above shows that both the frequency category "multipletimes" co-occurs with male and female respondents almost equally (the difference in distance between these factors on the plot is very less) 
+
+However, the frequency "Idontknow" seems to show a big difference among female and male respondents, in this case slightly far off than the othe frequencies associate with males. The same variation is observed in then contingency table above which shows a large variation among the row profiles.
+
+Overall the inertia (data variation) explained by the CA plot about the co-occurence of frequency and the gender variation is only 23.4% (DIM1 + DIM 2 in the plot), which is not very significant. This only still leaves a scope to include more covariates or the assoication of device use frequencies may be weak.
+
+### 5.2.1 Explore Association
+
+This section explores further possibilites of evidence of association among the two features : device use frequencies and Gender in the presence of a dummy coded variable : **device used**. It is natural to include a feature such as "device used " because, the frequencies are related to using a device.
+We first check the observed and expected counts for the data , to confirm that the chi square test warning is truly due to a large difference in the observed to expected counts.
+
+If the expected counts are much lower than the observed counts, then a simulation test is performed on the data to assert an association. Mosaic plot is used to check the significant assoications and variation in the observed to expected frequencies.
+
+
+```{r,use_mca, fig.height=8, fig.width=10,cache=T, warning=F, echo=F}
+
+mca.plot(dot.gen.use.dev.dt[,list(as.factor(GenderC), as.factor(device.use)),as.factor(use.dev.freq) ])
 
 dev.use.tab<-xtabs(~use.dev.freq + GenderC + device.use, data = dot.gen.use.dev.dt)
 # 
 summary(dev.use.tab)
 
-# print("check the observed and expected counts")
-# 
-# print(chisq.test(dev.use.tab)$observed)
-# 
-# print(chisq.test(dev.use.tab)$expected)
-# 
-print("the expected counts are much lower and hence the warning" )
 
-print("Use Monte-Carlo simulation test")
+head(chisq.test(dev.use.tab)$observed)
+head(chisq.test(dev.use.tab)$expected)
+ 
+
+print("Check again with Monte-Carlo simulation test")
 
 chisq.test(dev.use.tab, simulate.p.value = TRUE)
 
-print("Check the associations along with the devices")
+print("The simulation results also indicate a low p-value favoring a association among the row and column variables with a covariate such as Gender of the respondent")
+
+print("Check the associations along with the devices with a mosaic plot")
+
 set.seed(1072)
-pt<-xtabs(~use.dev.freq + device.use + GenderC,data = dot.gen.use.dev.dt)
+pt<-xtabs(~use.dev.freq + device.use + GenderC ,data = dot.gen.use.dev.dt)
+
+summary(pt)
+
 cotabplot(pt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
           panel_args = list(type = "assoc", margins = c(3,1,1,2), 
                             varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
           labeling_args = list(abbreviate_labs = c(8,6,1,1),
                                 rot_labels = c(0,0,90,0),
                                 just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
+                                gp_labels = gpar( fontsize = 14),pop = T)
+
 
 
 
 ```
-#### 3. Where do you most commonly use the devices you have access to
+In the mosaic plot above, the female-male "device use" proportions seem to be almost equal by the split.  The split w.r.t device-use frequencies vs. devices also looks almost the same. Use frequency of Smartphone seems higher (more than expected) among females than males and similarly, use frequency of tablet among males multiple times is much lower(lower than expected) than the females, or correspondingly there are more males respondents who never use tablet for any purpose than females respondents. Males also tend to use Basicmobile multiple times unlike females who use laptop more than males.
 
-```{r, echo=FALSE, warning=F,cache=T,fig.height= 8,fig.width=10,anal_dev_use_loc}
-
-
-plot.tech.data(dot.gen.dev.loc.dt, "use.at", "location.use.freq", "Device use location By Gender")
+In the mosaic plot above assoication of Females with a laptop once a day and once a month, assoication of males with basicmobile phone multiple times and desktop once a week seem to be statistically significant.
 
 
-mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at)),])
+### 5.2.2. Statistical Significance
+
+This section describes the tests conducted to measure the strength of association and inferences thereafter.
+
+#### 5.2.2.1. Diagnostic $$ \\(\chi^2\\) $$
+
+Since the outcome of the response variable is nominal with multiple levels and the datset is considerably large, the diagnostics results will be low yet considered significant.
+The total inertia and contingency coefficient results are given below.
+
+```{r,echo=F, use-diag, warning=F}
+
+head(prop.table(dev.use.tab,1))
+
+chi.d<-chisq.test(dev.use.tab)
+
+print("The Total inertia is")
+
+phi.sq<-as.numeric(chi.d$statistic)/sum(dev.use.tab)
+phi.sq
 
 
-dev.use.loc.tab<-xtabs(~use.at + GenderC , data = dot.gen.dev.loc.dt)
+print("The trace or Correlation (contingency) Coefficient between the frequencies and gender category is")
+
+sqrt(phi.sq)
+
+ratio <- chi.d$observed/chi.d$expected
+
+ratio<-round(ratio,3)
+head(ratio)
+
+
+```
+The contingeny coefficient is > 1 and hence there is a strong association among a few levels of frequencies.
+
+The ratio of observed to expected in some cases , in particular (**device = BasicMobilephone, freq=Multipletimes,gender=Male**)  and (**device=Smartphone,freq=Multipletimes, Gender=female**) is very high indicating a strong association between these levels of use of the device.
+
+# 6. Research Question - Q3 Analysis
+
+Research Question 3 is to extract survey reponses for questions on how the youth in the DOT survey countries are utlizing the technology, primarily social media tools, to their benefit while engaging in formal and informal ways of income generation.
+
+The Question to investigate as part of research analysis is :
+
+**In what ways are youth in these countries using technology and social media to support or engage in formal work? Informal work?**
+
+The respondents were asked the following following subset of questions that evoked a open ended answer which is captured as a text within the response cells
+
+## 6.1 Open ended questions-answers
+
+An open-ended question in a survey or public opinion poll is an unstructured question in which possible answers are not suggested, and the respondent answers it in his or her own words.
+
+Open ended questions have an advantage to evoke a meaningful qualitative response and latently capture the respondent's knowledge and thoughts that are relevant to the context.
+
+## 6.2 Content Analysis 
+
+The qualitative comments from the respondents can run into multiple lines and often such text is "mined" to investigate "patterns" and then identify "sub-categories" of content. In this context the main category of content is a reponse to "using the technology for work" and the relevant sub-categories can be "devices used for work related activities", "types of purposes" etc.
+
+The common approach to analysing text responses is adopt a unsupervised machine learning algorithm to automatically "discover" the hidden "sub-categories" within. The hidden sub-categories are referred to as "topics" within the text mining and analysis techniques. Topic modeling is the most common framework adopted to analyse a large Corpus
+
+For the purpose of analysing DOT open-ended response text, Structural Topic Modeling(STM) framework in R statistical software package is adopted  because this framework not only processes open ended survey response text as document but also allows covariates to be included as part of topic modeling. The STM framework ouputs a model where each open-ended response is modeled as a mixture of topics. Unlike other topic modeling libraries that require pre-processing of the text, STM makes it simple by reading the response text "as-is" into the framework for further analysis. This makes the analysis less complex and visualizations easier. *Refer to section 9 of this document for details about STM framework.
+
+DOT survey response data is a well formed set of samples that can be thought of (youth in the selected countries) stratified by location of survey and within each strata , the observations form a simple random sample of youth of varying age categories. Hence Age is considered as a covariate that can be included in the text analysis with selected sub-groups(levels). Since STM supports "topic contrast visualizations"  between two groups, the topic modeling is performed with selected levels of Age. The intent of this analysis is to study any unique features among the *topics* that vary by Age of the youth. This specific analysis is concluded at the exploratory level with appropriate inferences. The intuition is that words within a topic and also their frequency vary by the covariate (Age), and hence providing valuable information to the inferences. Topic models distributions are structured by influence of covariate.
+
+## 6.4 Visualization of Text Analyses
+
+Typical Text processing in Open ended survey questions includes visualization of proximities between words and topics, characteristic words that make up for every topic. STM supports visualizations such as wordcloud, plots for words within each topic, Topic proportion over documents, Topic-meta data relations (influence of covariates), topic perspectives, which brings out the contrast in vocabulary used that vary by covariate on a per-topic basis
+
+## 6.5. Topic Modeling
+
+STM includes document meta data into the text analysis via topic prevelance and topical content coviartes. The text analysis for responses of the below mentioned questions are provided youth of specific age categories and it is interesting to investigate if the responses are in anyway dependent on their Age. It makes good sense to include *Age* as an overlapping covariate in topic prevelance and content parameters of the STM model, so as to investigate the influence  on use specific set of words in a topic and the use frequency. In the regression model parameters, topic is used as a response variable and Age as both explanatory and covariate variable.
+
+## 6.6.Statistical Analysis
+
+The STM model estimates for each document, the proportion of words attributable to each topic,providing a measure of topic *prevalence* and topic *content*, the regression is performed for topic as an outcome as a variation in respondent attributes such as Age, Gender are the explanatory variables.The STM is capable of conducting this regression while also generating the topics. The following sections capture these details.
+
+## 6.7 In what ways do you use devices for work?
+
+The question in the subject evoked open-ended answers from the respondents and the answers are captured as free text by the DOT researcher 
+
+### 6.7.1 Data handling
+
+A subset of data with this response variable is extracted from the full data set including the control variables such as Gender, Location and Age for each respondent.
+
+Open-ended response variable is reconstructed as a raw text vector, after filtering the blanks and NULL response cases. Thereafter the text vector is processed using STM library functions in R. The STM model is built using Age as a Topic prevelance and Topic content Covariate and selected topics are re-estimated to investigate any Topic-metadata relations.
+
+A word cloud followed by Topic proportions within Documents is plotted to provide insights into the frequent words and high probability topic-document associations.
+
+Topic-Covariate influence is presented using "Topic perspectives plot" and "Topical differences plot."
+
+```{r,echo=F,warning=F,Q3-data,results="hide"}
+#Get only relevant columns from the dot survey response data set
+
+dot.tech.sm.work.man.dt<-subset(dotsr, 
+                                select = grepl("ID|Gender|Age|Location|Geo",
+                                               names(dotsr)))
+
+dot.tech.sm.work.dt<-dotsr[,960:1144,with=F]
+
+#check all the variables chosen for this Q
+dot.tech.sm.work.var.dt<-data.table(var.name = colnames(dot.tech.sm.work.dt),var.type = sapply(dot.tech.sm.work.dt,class))
+
+
+names(dot.tech.sm.work.dt) <- gsub("In.what.ways.do.you.use.devices.for.work", "dev.for.work", names(dot.tech.sm.work.dt))
+
+dot.tech.sm.work.full.dt<-cbind(dot.tech.sm.work.man.dt,dot.tech.sm.work.dt)
+
+#remove NAs in mandatory cols
+dot.tech.sm.work.full.dt<-dot.tech.sm.work.full.dt[rowSums(is.na(dot.tech.sm.work.full.dt[,1:9, with = F]))==0,,drop =F]
+
+#remove NA when count exceeds other variables
+dot.tech.sm.work.full.dt<-dot.tech.sm.work.full.dt[rowSums(is.na(dot.tech.sm.work.full.dt[,10:194, with = F])) != 184,,drop =F]
+
+```
+
+### 6.7.2 Topics Estimates Visualization
+
+```{r,echo=F,Q3-txt,results ="hide",fig.height=8,fig.width=12,warning=F}
+
+
+raw.vect1<-dot.tech.sm.work.full.dt[(dev.for.work. != "") & (dev.for.work.!= " ") & (Age.Range > 2), list(ID, GenderC, LocationRespondent,dev.for.work.), by = AgeC]
+ temp1<-textProcessor(documents=raw.vect1$dev.for.work.,metadata=raw.vect1)
+ 
+ meta1<-temp1$meta
+ vocab1<-temp1$vocab
+ docs1<-temp1$documents
+ out1 <-prepDocuments(docs1, vocab1, meta1)
+ docs1<-out1$documents
+ vocab1<-out1$vocab
+ meta1 <-out1$meta
+ temp1<-NULL
+ 
+ set.seed(01234)
+ devworkcontent <- stm(out1$documents, out1$vocab, K = 5,
+                       prevalence =~ AgeC , content =~ AgeC, 
+                       data=out1$meta, init.type = "Spectral")
+ 
+ cloud(devworkcontent, scale = c(6,1),colors=brewer.pal(6,"Dark2"))
+
+ plot.STM(devworkcontent, type = "labels", 
+          main= "Other Ways of youth using devices for work",cex = 1)
+ 
+ plot.STM(devworkcontent, type = "summary", xlim = c(0, .8),text.cex=2)
+
+ plot.STM(devworkcontent, type = "perspectives", topics = 3, text.cex = 2,
+          main = "Other Ways of youth using devices for work")
+ 
+ prep <- estimateEffect(1:5 ~ AgeC , devworkcontent,
+                        meta = out1$meta, uncertainty = "Global")
+ 
+ plot.estimateEffect(prep, covariate = "AgeC", topics = c(1,2,3),
+                     model = devworkcontent, method = "difference",
+                     cov.value1 = "31+", cov.value2 = "25-30",
+                     xlab = "More 25-30 ... More 31+",
+                     main = "Effect of Covariate(Age) on Topic content ",
+                     xlim = c(-.09, 0.1),text.cex = 3)
+ 
+
+th1<-findThoughts(devworkcontent,texts=raw.vect1$dev.for.work.,topics=c(1,2),n=2)$docs[[1]]
+
+plotQuote(th1, width = 30,text.cex=2,main="Topic 1 & 2")
+
+```
+
+The word cloud plot above indicates that the most frequent words in the responses are "work", "communicate", "report", "use", "enail" etc.
+
+The plot below the wordcloud is for estimated topics (merely as collection of words). With subject understanding and on observation,  **Topic1** can be estimated as mostly about "**exchange of content such as pictures, files etc via applications on the device**", in **Topic2** , the content is about the "**information sharing via emails for job related activities**", **Topic3** is discussed for "writing related acitivities for work such as research and report", Topic4 is more focussed on "**how the devices are used for work planning, keeping a track**" "**Topic5**" is discussed for "**personal and professional interests carried out with the devices**." These inferences about topic *subjects* is purely intuitive. Since the research is an observational study, these inferences can be verified against the documents to topics association as below
+
+
+The plot below the *Top Topics listing* is a comparison of **effect of Age** on the content (words/vocabulary ) used in the topics. It can be observed that Age group 25-30, use vocabulary such as "research  document", "report","prepare", while respondents of Age 31 and above use vocabulary for work related writing as "file"
+
+The Topic metadata(here the AgeC variable is the metadata) relationship  is plotted next, to check the variation in topic proportions under the influence of Age. Topic2 seems to be more aligned to a document from Age 31 compared to Topics3 and Topic4. We cross  check that against the acutal document content with the next plot that shows the content for topics 2 and 4.When these documents(text vectors for respondent's answer) are cross verified against the actual responses in the data set, it can be concluded that the model has performed fairly well.
+
+In the above open-ended survey response text analysis, the choice of number of topics is purely arbitrary.
+
+
+# 7. Research Question - Q5 Analysis
+
+Analysis to Q5 follows the similar approach as in *Question 3* above as Question 5 is also evoking open-end answers from the youth about **In what ways are youth in these countries using technology and social media for learning**
+
+The question in the subject is an extension to DOT's study to understand how youth in these countries are benefiting from technology and social media when used for their learning.
+
+The question is again a collection of following questions posed to the respondents on devices,Internet and digital services used for learning or self-development.The answers from the respondents are again captured as text variable by the DOT researcher.In the sections below, text analysis is conducted for answers for **In what ways do you use devices for learning** 
+
+```{r, echo=F,warning=F,Q5-lrn-anal,results = "hide"}
+ 
+ #Get mandatory relevant columns from the dot survey response data set
+dot.tech.sm.learn.man.dt<-subset(dotsr, select = grepl("ID|Gender|Age|Location|Geo", names(dotsr)))
+
+dot.tech.sm.learn.dt<-dotsr[,1146:1219,with=F]
+
+#check all the variables chosen for this Q
+dot.tech.sm.learn.var.dt<-data.table(var.name = colnames(dot.tech.sm.learn.dt),var.type = sapply(dot.tech.sm.learn.dt,class))
+
+
+names(dot.tech.sm.learn.dt) <- gsub("In.what.ways.do.you.use.devices.for.learning", "dev.for.learn", names(dot.tech.sm.learn.dt))
+dot.tech.sm.learn.full.dt<-cbind(dot.tech.sm.learn.man.dt,dot.tech.sm.learn.dt)
+
+#remove NAs in mandatory cols
+dot.tech.sm.learn.full.dt<-dot.tech.sm.learn.full.dt[rowSums(is.na(dot.tech.sm.learn.full.dt[,1:9, with = F]))==0,,drop =F]
+
+#remove NA when count exceeds other variables
+dot.tech.sm.learn.full.dt<-dot.tech.sm.learn.full.dt[rowSums(is.na(dot.tech.sm.learn.full.dt[,10:73, with = F])) != 63,,drop =F]
+
+
+```
+
+```{r,echo=F,warning=F,Q5-text-anal,results="hide"}
+
+names(dot.tech.sm.learn.full.dt) <- gsub("In.what.ways.have.you.ever.used.devices.for.learning....Mobile.phone", "Mobil.phone.learn", names(dot.tech.sm.learn.full.dt))
+names(dot.tech.sm.learn.full.dt) <- gsub("In.what.ways.have.you.ever.used.devices.for.learning....Desktop.computer", "Desktop.learn", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("In.what.ways.have.you.ever.used.devices.for.learning....Laptop.computer", "Laptop.learn", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("In.what.ways.have.you.ever.used.devices.for.learning....Tablet", "Tab.learn", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("In.what.ways.have.you.ever.used.devices.for.learning....Other.electronic.devices", "Other.edev.learn", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("In.what.ways.do.you.use.the.Internet.for.learning.", "Intrnt.for.learn", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("What.other.digital.services.tools.do.you.use.for.learning.", "digi.tools.for.learn", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("If.you.have.participated.an.online.course..what.did.you.think.of.it.....What.was.the.most.challenging.part.of.participating.in.an.online.course.", "chlnge.in.online.course", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("If.you.have.participated.an.online.course..what.did.you.think.of.it.....What.was.the.best.part.about.participating.in.an.online.course.", "best.in.online.course", names(dot.tech.sm.learn.full.dt))
+
+names(dot.tech.sm.learn.full.dt) <- gsub("If.you.have.participated.an.online.course..what.did.you.think.of.it.....Would.you.seek.out.an.online.course.again..Why.or.why.not.", "seek.again.online.course", names(dot.tech.sm.learn.full.dt))
+
+raw.vect2<-dot.tech.sm.learn.full.dt[(Mobil.phone.learn != "") & 
+                                       (Mobil.phone.learn != " ") & 
+                                       (Age.Range > 2), 
+                                      list(ID, GenderC,
+                                      LocationRespondent,
+                                      Mobil.phone.learn), 
+                                      by = AgeC]
+temp2<-textProcessor(documents=raw.vect2$Mobil.phone.learn,metadata=raw.vect2)
+
+meta2<-temp2$meta
+vocab2<-temp2$vocab
+docs2<-temp2$documents
+out2 <- prepDocuments(docs2, vocab2, meta2)
+docs2<-out2$documents
+vocab2<-out2$vocab
+meta2 <-out2$meta
+temp2<-NULL
+
+
+
+```
+## 7.1 Topic Estimates and Modeling  
+
+```{r,echo=F,warning=F,Q5-STM,fig.height=8,fig.width=14,results="hide"}
+
+Mobil.phone.learn.stm<- stm(out2$documents, out2$vocab, 
+                                      K = 5,prevalence =~ AgeC , 
+                                      content =~ AgeC, 
+                                      data = out2$meta, 
+                                      init.type = "Spectral")
+
+cloud(Mobil.phone.learn.stm, scale = c(6,1),colors=brewer.pal(6,"Dark2"))
+  
+plot.STM(Mobil.phone.learn.stm, type = "labels", 
+          main= "Ways of youth using devices for Learning",cex = 1)
+ 
+plot.STM(Mobil.phone.learn.stm, type = "summary", xlim = c(0, .8),
+         text.cex=2, main = "Topic Estimates for devices used for learning")
+
+ plot.STM(Mobil.phone.learn.stm, type = "perspectives", topics = 3, 
+          text.cex = 2,
+          main = "Ways of youth using devices for work")
+ 
+ prep1 <- estimateEffect(1:5 ~ AgeC , Mobil.phone.learn.stm,
+                        meta = out2$meta, uncertainty = "Global")
+ 
+ plot.estimateEffect(prep1, covariate = "AgeC", topics = c(1,2,3),
+                     model = Mobil.phone.learn.stm, method = "difference",
+                     cov.value1 = "31+", cov.value2 = "25-30",
+                     xlab = "More 25-30 ... More 31+",
+                     main = "Effect of Covariate(Age) on Topic content ",
+                     xlim = c(-.09, 0.1),text.cex = 3)
+ 
+
+# th2<-findThoughts(Mobil.phone.learn.stm,texts=raw.vect2$Mobil.phone.learn,
+#                   topics=c(1,2),n=2)$docs[[1]]
 # 
-summary(dev.use.loc.tab)
-
-
-mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at),as.factor(location.use.freq)) ,])
-
-set.seed(1004)
-
-pl<-xtabs(~use.at + location.use.freq + GenderC,data = dot.gen.dev.loc.dt)
-
-summary(pl)
-
-cotabplot(pl, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
-          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
-                            varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
-          labeling_args = list(abbreviate_labs = c(8,6,1,1),
-                                rot_labels = c(0,0,90,0),
-                                just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
-
-
-
+# plotQuote(th2, width = 30,text.cex=2,main="Topic 1 & 2")
 
 ```
+The WordCloud plot above indicates that the most highly used features of mobile device for learning  are *read*, *search google*, *use for research*, *access internet for material* ,*getting news updates* etc.
 
+The words distribution among Topics predicted by the text analysis model above almost coincide with the information in Wordcloud for response vocabulary
 
-#### 5.How much access to do you have to the Internet?
+**Topic1** can be estimated to be discussing *information or useful material download for learning*, **Topic2** can be about  **reading material online**, **Topic3** can be approximated to be about **tools or applications for learning ** used on the device that aide the learning, **Topic4** is primarily about **searching or browsing the internet** for reading material **Topic5** can be expected to be about **information sharing , gain knowledge**
 
-```{r, echo=F,fig.height=10,fig.width=10,anal_intrnt_access,cache=T,warning=F}
+Further, the **Topic proportions** plot below indicates that the learning with a Mobile device happens primarily via, e-book reading, downloading useful material , followed by accessing useful material for research or other activities, searching and sharing.
 
+Again an observation of the topical contrasts plot below among Age group 25-30 and 31+ indicates that Age group 25-30 primarily use google search and facebook as their learning modes while Age group 31+ look at learning with the device as send and receive updates from peers, while both age groups look at learning as "reasearching for useful material, reading online etc."
 
-plot.tech.data(dot.gen.acc.intrnt.dt, "inrnt.on.device", "inrnt.dev.freq", "Internet Access  By Gender")
+A fair conclusion from the above visualization is that Mobile device is used to access internet and thereon access or download reading material such as books for learning purpose. There seems to be a large inclination for learning by search for relevant research material and exchange or share information among freinds for learning.
 
+Mapping it back to the actual data, it can be understood that the estimated topic model has performed reasonably well. Similar analysis can be extended to remaining collection of responses in the learning catergory of DOT data.
 
-mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.dev.freq)),])
 
+# 8. References
 
-dev.acc.intrnt.tab<-xtabs(~inrnt.dev.freq + GenderC , data = dot.gen.acc.intrnt.dt)
-# 
-summary(dev.acc.intrnt.tab)
+http://www.stat.cmu.edu/~hseltman/309/Book/chapter16.pdf
 
+http://www.sthda.com/english/wiki/correspondence-analysis-basics-r-software-and-data-mining
 
-mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.on.device),as.factor(inrnt.dev.freq)) ,])
+https://cran.r-project.org/web/packages/vcdExtra/vignettes/vcd-tutorial.pdf
+Introduction to SAS.  UCLA: Statistical Consulting Group. 
+from http://www.ats.ucla.edu/stat/sas/notes2/ (accessed November 24, 2007).
 
-set.seed(2001)
+http://www-users.cs.umn.edu/~ludford/stat_overview.htm
 
-pInt<-xtabs(~inrnt.dev.freq + inrnt.on.device + GenderC,data = dot.gen.acc.intrnt.dt)
+http://www.agrocampus-ouest.fr/math/sensometrics2012/Slides/Lebart.pdf
 
-summary(pInt)
+http://scholar.harvard.edu/dtingley/files/topicmodelsopenendedexperiments.pdf
 
-cotabplot(pInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
-          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
-                            varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
-          labeling_args = list(abbreviate_labs = c(8,6,1,1),
-                                rot_labels = c(0,0,90,0),
-                                just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
+http://www.electionstudies.org/conferences/2008Methods/Popping.pdf
 
+http://blog.echen.me/2011/08/22/introduction-to-latent-dirichlet-allocation/
 
+https://tedunderwood.com/2012/04/07/topic-modeling-made-just-simple-enough/
+https://scholar.princeton.edu/sites/default/files/bstewart/files/stmnips2013.pdf
 
+# 9. Acknowledgements
 
+I'm thankful to Coursolve and DOT organizations for having given me an opportunity to work on this research internship, which has an immense potential to explore latest tools and techniques in the field of Survey Data Analysis,
 
-```
+My sincere thanks to DOT Proect management and Admin. team for having provided with all the necessary support needed on the project. Special thanks to AnnePatterson and Sharon Nyangweso for being so responsive over the questions posted
 
+This research analysis is a good amount of hardwork combined with challenge and vast learning. This work would not have reached this stage without the motivation from co-collaborators in the team, my special thanks to Peperomia for sharing his valuable insights and talent across comments on the project threads.
 
-#### 6.How often do you actually use the Internet?
+I express my sincere thanks to Coursolve devlopment team and experts for their thoughtful effort in bringing up such challenging digital internships to the online learning platform
 
-```{r,echo=F,fig.height=10,fig.width=12,anal_intrnt_use,cache=T,warning=F}
+# 10. Extensions
 
-plot.tech.data(dot.gen.use.intrnt.dt, "intrnt.use.on.dev", "intrnt.on.dev.use.freq", "Internet use  By Gender")
+This project , although has been analysed to extent of prescribed methods for Survey Data analysis and text analysis, there is a vast potential for further exploration.
 
+Some of the explorations which are assumed to be appropriate for a further data analysis are :
 
-mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.on.dev.use.freq)),])
+1. Multi-nomial regression Analysis for multi-level response outcome
 
+2. Application of visualizations and statistical tools for discrete data analysis
 
-dev.use.intrnt.tab<-xtabs(~intrnt.on.dev.use.freq + GenderC , data = dot.gen.use.intrnt.dt)
-# 
-summary(dev.use.intrnt.tab)
+3. Approach to sruvey data with the help of specific packages for survey data analysis as **survey** in R software suite of libraries
 
-
-mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.use.on.dev),as.factor(intrnt.on.dev.use.freq)) ,])
-
-set.seed(2701)
-
-pUInt<-xtabs(~intrnt.on.dev.use.freq + intrnt.use.on.dev + GenderC,data = dot.gen.use.intrnt.dt)
-
-summary(pUInt)
-
-cotabplot(pUInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
-          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
-                            varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
-          labeling_args = list(abbreviate_labs = c(8,6,1,1),
-                                rot_labels = c(0,0,90,0),
-                                just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
-
-
-
-
-
-
-```
-
-#### 7.Where do you most commonly use the Internet?
-
-```{r,fig.height=10,fig.width=10,anal_intrnt_use_loc,cache=T,warning=F}
-
-
-plot.tech.data(dot.gen.use.intrnt.loc.dt, "intrnt.use.loc", "intrnt.use.loc.freq", "Location of Internet use  By Gender")
-
-
-mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc)),])
-
-
-dev.use.intrnt.loc.tab<-xtabs(~intrnt.use.loc + GenderC , data = dot.gen.use.intrnt.loc.dt)
-# 
-summary(dev.use.intrnt.loc.tab)
-
-
-mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc),as.factor(intrnt.use.loc.freq)) ,])
-
-set.seed(2879)
-
-pLocInt<-xtabs(~intrnt.use.loc + intrnt.use.loc.freq + GenderC,data = dot.gen.use.intrnt.loc.dt)
-
-summary(pUInt)
-
-cotabplot(pLocInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
-          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
-                            varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
-          labeling_args = list(abbreviate_labs = c(8,6,1,1),
-                                rot_labels = c(0,0,90,0),
-                                just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
-
-
-
-
-
-
-
-```
-
-#### 8.What digital services/tools do you have access to?
-
-```{r,echo=F,fig.height=10,fig.width=12,anal_digi_tools_acc,cache=T,warning=F}
-
-plot.tech.data(dot.gen.acc.digi.dt, "tool.ser.dig", "frq.ac.dig", "Digital Tools Access  By Gender")
-
-
-mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig)),])
-
-
-dig.tools.acc.tab<-xtabs(~tool.ser.dig + GenderC , data = dot.gen.acc.digi.dt)
-# 
-summary(dig.tools.acc.tab)
-
-
-mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig),as.factor(frq.ac.dig)) ,])
-
-set.seed(28891)
-
-pdigAc<-xtabs(~tool.ser.dig + frq.ac.dig + GenderC,data = dot.gen.acc.digi.dt)
-
-summary(pdigAc)
-
-cotabplot(pdigAc, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
-          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
-                            varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 30),#increase title font
-          labeling_args = list(abbreviate_labs = c(8,6,1,1),
-                                rot_labels = c(0,0,90,0),
-                                just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
-
-
-
-
-
-
-
-```
-
-
-#### 9.Where do you most commonly use digital services?**
-
-```{r,echo=F,fig.height=10,fig.width=10,anal_digi_tools_use_loc,cache=T,warning=F}
-
-plot.tech.data(dot.gen.loc.digi.dt, "digi.loc.of.use", "at.loc.digi.use.freq", "Location of Digital tools use ~ Gender")
-
-
-mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use)),])
-
-
-dig.loc.use.tab<-xtabs(~digi.loc.of.use + GenderC , data = dot.gen.loc.digi.dt)
-# 
-summary(dig.loc.use.tab)
-
-
-mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use),as.factor(at.loc.digi.use.freq)) ,])
-
-set.seed(00221)
-
-pdiglocU<-xtabs(~digi.loc.of.use + at.loc.digi.use.freq + GenderC,data = dot.gen.loc.digi.dt)
-
-summary(pdiglocU)
-
-cotabplot(pdiglocU, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
-          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
-                            varnames = FALSE),las = 2,
-          text_gp = gpar(col = "blue",fontsize = 20),#increase title font
-          labeling_args = list(abbreviate_labs = c(8,6,1,1),
-                                rot_labels = c(0,0,90,0),
-                                just_labels=c("left","left","left","left")),
-                                gp_labels = gpar( fontsize = 16),pop = T)
-
-
-
-
-
-
-
-```
-
-
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-
-```
-```{r, echo=FALSE, warning=F}
-plot(cars)
-
-```
-
+4.Rigorous analysis of Data by other Covariates such as Age, Location , Employment and Education. 

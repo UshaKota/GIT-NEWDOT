@@ -1,0 +1,295 @@
+---
+title: "DOT-Survey-Analysis-Appendix"
+author: "UshaKiran.Kota"
+date: "May 27, 2016"
+output: word_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r,echo=F,warning=F, cor_acc_use_dev, results =
+"hide",fig.height=10,fig.width=14,cache=T,eval=F}
+
+use.dev.dt.mrg<-dot.gen.use.dev.dt
+
+rename(use.dev.dt.mrg,replace = c("device.use" = "device"))
+mrg.acc.use.dev.dt<-merge(dot.gen.acc.dev.dt,use.dev.dt.mrg, by = c("ID","device"), all.y=T)
+
+na.cols<-c("Location.x","Gender.x", "GenderC.x","AgeRange.x","AgeC.x","LocationRespondent.x", "Geography.x", "GeographyC.x")
+
+no.na.cols<-c("Gender.y", "GenderC.y","AgeRange.y","AgeC.y","LocationRespondent.y","Location.y", "Geography.y", "GeographyC.y")
+
+#http://stackoverflow.com/questions/16943939/elegantly-assigning-multiple-columns-in-data-table-with-lapply
+
+mrg.acc.use.dev.dt[, (na.cols) := lapply(no.na.cols, function(x) {mrg.acc.use.dev.dt[[x]]})]
+
+
+setnames(mrg.acc.use.dev.dt,old = na.cols, new  = c("Location", "LocationRespondent","Gender", "GenderC", "AgeRange" ,"AgeC","Geography", "GeographyC"))
+
+#http://stackoverflow.com/questions/24590341/removing-multiple-columns-from-r-data-table-with-parameter-for-columns-to-remove
+mrg.acc.use.dev.dt.c<-mrg.acc.use.dev.dt[, (no.na.cols) := NULL]
+
+cnt_acc_freq<-mrg.acc.use.dev.dt.c[, list(acc.freq.cnt = length(ID)), by =c("device", "dev.avail.freq")]
+
+cnt_use_freq<-mrg.acc.use.dev.dt.c[, list(use.freq.cnt = length(ID)), by =c("device", "use.dev.freq")]
+acc.use.freq.dt<-mrg.acc.use.dev.dt.c[,list(cnt = length(ID)), by = c("device","dev.avail.freq", "use.dev.freq")]
+```
+
+#### 3. Where do you most commonly use the devices you have access to
+
+```{r, echo=FALSE, warning=F,cache=T,fig.height=10,fig.width=14,anal_dev_use_loc}
+
+
+
+plot.tech.data(dot.gen.dev.loc.dt, "use.at", "location.use.freq", "Device use location By Gender")
+
+
+mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at)),])
+
+
+dev.use.loc.tab<-xtabs(~use.at + GenderC , data = dot.gen.dev.loc.dt)
+# 
+summary(dev.use.loc.tab)
+
+
+mca.plot(dot.gen.dev.loc.dt[,list(as.factor(GenderC), as.factor(use.at),as.factor(location.use.freq)) ,])
+
+set.seed(1004)
+
+pl<-xtabs(~use.at + location.use.freq + GenderC,data = dot.gen.dev.loc.dt)
+
+summary(pl)
+
+cotabplot(pl, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 14),pop = T)
+```
+
+
+#### 5.How much access to do you have to the Internet?
+
+```{r, echo=F,fig.height=10,fig.width=14,anal_intrnt_access,cache=T,warning=F}
+
+
+plot.tech.data(dot.gen.acc.intrnt.dt, "inrnt.on.device", "inrnt.dev.freq", "Internet Access  By Gender")
+
+
+mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.dev.freq)),])
+
+
+dev.acc.intrnt.tab<-xtabs(~inrnt.dev.freq + GenderC , data = dot.gen.acc.intrnt.dt)
+# 
+summary(dev.acc.intrnt.tab)
+
+
+mca.plot(dot.gen.acc.intrnt.dt[,list(as.factor(GenderC), as.factor(inrnt.on.device),as.factor(inrnt.dev.freq)) ,])
+
+set.seed(2001)
+
+pInt<-xtabs(~inrnt.dev.freq + inrnt.on.device + GenderC,data = dot.gen.acc.intrnt.dt)
+
+summary(pInt)
+
+cotabplot(pInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 14),pop = T)
+```
+
+
+#### 6.How often do you actually use the Internet?
+
+```{r,echo=F,fig.height=10,fig.width=14,anal_intrnt_use,cache=T,warning=F}
+
+plot.tech.data(dot.gen.use.intrnt.dt, "intrnt.use.on.dev", "intrnt.on.dev.use.freq", "Internet use  By Gender")
+
+
+mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.on.dev.use.freq)),])
+
+
+dev.use.intrnt.tab<-xtabs(~intrnt.on.dev.use.freq + GenderC , data = dot.gen.use.intrnt.dt)
+# 
+summary(dev.use.intrnt.tab)
+
+
+mca.plot(dot.gen.use.intrnt.dt[,list(as.factor(GenderC), as.factor(intrnt.use.on.dev),as.factor(intrnt.on.dev.use.freq)) ,])
+
+set.seed(2701)
+
+pUInt<-xtabs(~intrnt.on.dev.use.freq + intrnt.use.on.dev + GenderC,data = dot.gen.use.intrnt.dt)
+
+summary(pUInt)
+
+cotabplot(pUInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 14),pop = T)
+```
+
+#### 7.Where do you most commonly use the Internet?
+
+```{r,echo=F,fig.height=10,fig.width=14,anal_intrnt_use_loc,cache=T,warning=F}
+
+
+plot.tech.data(dot.gen.use.intrnt.loc.dt, "intrnt.use.loc", "intrnt.use.loc.freq", "Location of Internet use  By Gender")
+
+
+mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc)),])
+
+
+dev.use.intrnt.loc.tab<-xtabs(~intrnt.use.loc + GenderC , data = dot.gen.use.intrnt.loc.dt)
+# 
+summary(dev.use.intrnt.loc.tab)
+
+
+mca.plot(dot.gen.use.intrnt.loc.dt[,list(as.factor(GenderC), as.factor(intrnt.use.loc),as.factor(intrnt.use.loc.freq)) ,])
+
+set.seed(2879)
+
+pLocInt<-xtabs(~intrnt.use.loc + intrnt.use.loc.freq + GenderC,data = dot.gen.use.intrnt.loc.dt)
+
+summary(pUInt)
+
+cotabplot(pLocInt, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 14),pop = T)
+
+```
+
+#### 8.What digital services/tools do you have access to?
+
+```{r,echo=F,cache=T,warning=F,fig.height=10,fig.width=14,anal_digi_tools_acc}
+
+plot.tech.data(dot.gen.acc.digi.dt, "tool.ser.dig", "frq.ac.dig", "Digital Tools Access  By Gender")
+
+
+mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig)),])
+
+
+dig.tools.acc.tab<-xtabs(~tool.ser.dig + GenderC , data = dot.gen.acc.digi.dt)
+# 
+summary(dig.tools.acc.tab)
+
+
+mca.plot(dot.gen.acc.digi.dt[,list(as.factor(GenderC), as.factor(tool.ser.dig),as.factor(frq.ac.dig)) ,])
+
+set.seed(28891)
+
+pdigAc<-xtabs(~tool.ser.dig + frq.ac.dig + GenderC,data = dot.gen.acc.digi.dt)
+
+summary(pdigAc)
+
+cotabplot(pdigAc, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 14),pop = T)
+
+
+```
+
+#### 9.Where do you most commonly use digital services?
+
+```{r,echo=F,fig.height=10,fig.width=14,anal_digi_tools_use_loc,cache=T,warning=F}
+
+plot.tech.data(dot.gen.loc.digi.dt, "digi.loc.of.use", "at.loc.digi.use.freq", "Location of Digital tools use ~ Gender")
+
+
+mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use)),])
+
+
+dig.loc.use.tab<-xtabs(~digi.loc.of.use + GenderC , data = dot.gen.loc.digi.dt)
+# 
+summary(dig.loc.use.tab)
+
+
+mca.plot(dot.gen.loc.digi.dt[,list(as.factor(GenderC), as.factor(digi.loc.of.use),as.factor(at.loc.digi.use.freq)) ,])
+
+set.seed(00221)
+
+pdiglocU<-xtabs(~digi.loc.of.use + at.loc.digi.use.freq + GenderC,data = dot.gen.loc.digi.dt)
+
+summary(pdiglocU)
+
+cotabplot(pdiglocU, panel = cotab_coindep, shade = TRUE,legend = FALSE, 
+          panel_args = list(type = "assoc", margins = c(3,1,1,2), 
+                            varnames = FALSE),las = 2,
+          text_gp = gpar(col = "blue",fontsize = 14),#increase title font
+          labeling_args = list(abbreviate_labs = c(8,6,1,1),
+                                rot_labels = c(0,0,90,0),
+                                just_labels=c("left","left","left","left")),
+                                gp_labels = gpar( fontsize = 14),pop = T)
+
+
+
+
+
+
+
+```
+
+
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+
+```
+```{r, echo=FALSE, warning=F}
+plot(cars)
+
+```
+
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

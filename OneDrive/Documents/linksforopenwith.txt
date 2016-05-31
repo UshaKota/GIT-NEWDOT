@@ -1,0 +1,21 @@
+https://www.cs.cmu.edu/afs/cs/project/cmcl/link.nectar/member/mjchan/lib/emacs/lisp/www/browse-url.el
+https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/A_brief_guide_to_Mozilla_preferences
+http://forums.pentaho.com/archive/index.php/t-51525.html
+http://stackoverflow.com/questions/5742128/javascript-standalone-compiler-or-interpreter-for-windows
+http://stackoverflow.com/questions/2035678/how-to-open-files-in-web-browsers-e-g-firefox-within-editors-like-vim-or-emacs
+http://c2.com/cgi/wiki?BetterCygwinTerminal
+http://www.codeproject.com/Articles/13103/Calling-the-Open-With-dialog-box-from-your-applica
+
+http://tiku.io/questions/269524/how-can-i-display-the-open-with-dialog-for-an-unregistered-file-extension 
+this will work well for windows based clips file
+
+http://tiku.io/questions/4604823/how-can-i-open-a-local-file-with-a-local-program-through-my-browser
+https://github.com/aabeling/commandrun
+
+https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIProcess
+
+
+someuseful links
+http://unix.stackexchange.com/questions/11707/are-cygwin-vim-commands-different-than-normal-vim
+http://stackoverflow.com/questions/2035678/how-to-open-files-in-web-browsers-e-g-firefox-within-editors-like-vim-or-emacs
+https://github.com/aabeling/commandrun

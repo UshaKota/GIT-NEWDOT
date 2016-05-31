@@ -1,4 +1,4 @@
-library(data.table)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    library(data.table)
 library(ggplot2)
 library(plyr)
 library(stringr)
@@ -11,6 +11,7 @@ library(MASS)
 library(FactoMineR)
 #http://stats.stackexchange.com/questions/90380/interpreting-negative-coordinates-and-origin-in-2d-correspondence-analysis-plot?lq=1
 #http://www.sthda.com/english/wiki/correspondence-analysis-in-r-the-ultimate-guide-for-the-analysis-the-visualization-and-the-interpretation-r-software-and-data-mining#visual-inspection
+
 filename = "dotnewData.RDS"
 
 
@@ -516,5 +517,3 @@ one.use.digi.loc.case<-dot.gen.loc.digi.dt[ID ==43912947 , list(digi.loc.of.use,
 dot.gen.loc.digi.dt.m<-NULL
 id.cols.use.digi.loc.m<-NULL
 f<-NULL
-
-

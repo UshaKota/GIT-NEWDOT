@@ -8,10 +8,6 @@ library(vcd)
 library(lattice)
 library(MASS)
 
-#for text mining
-library(igraph)
-library(fpc)
-
 
 library(corrplot)
 library(ggplot2)
@@ -228,58 +224,58 @@ freq.of.work<-as.table(work.freq)
 ##################process open-ended text input responses again######################
 ##########What other waus do you use devices for work##################
  
-#  raw.vect1<-dot.tech.sm.work.full.dt[(dev.for.work. != "") & (Age.Range > 2), list(ID, GenderC, LocationRespondent,dev.for.work.), by = AgeC]
-#  temp1<-textProcessor(documents=raw.vect1$dev.for.work.,metadata=raw.vect1)
-#  raw2.vect1<-raw.vect1[dev.for.work. != " "]
-#  
-#  meta1<-temp1$meta
-#  vocab1<-temp1$vocab
-#  docs1<-temp1$documents
-#  out1 <-prepDocuments(docs1, vocab1, meta1)
-#  docs1<-out1$documents
-#  vocab1<-out1$vocab
-#  meta1 <-out1$meta
-#  temp1<-NULL
-#  
-#  
-#  
-#  #set.seed(01234)
-#  devworkcontent <- stm(out1$documents, out1$vocab, K = 5,prevalence =~ AgeC , content =~ AgeC,
-#                        data = out1$meta, init.type = "Spectral")
-#  
-# #  devworkcontent.select <- selectModel(out1$documents, out1$vocab, K = 5,
-# #                                prevalence =~ as.factor(AgeC) , data = out1$meta, seed = 8458159)
-# #                                
+ raw.vect1<-dot.tech.sm.work.full.dt[(dev.for.work. != "") & (dev.for.work.!= " ") & (Age.Range > 2), list(ID, GenderC, LocationRespondent,dev.for.work.), by = AgeC]
+ temp1<-textProcessor(documents=raw.vect1$dev.for.work.,metadata=raw.vect1)
+ #raw2.vect1<-raw.vect1[dev.for.work. != " ", list(dev.for.work.)]
+ 
+ meta1<-temp1$meta
+ vocab1<-temp1$vocab
+ docs1<-temp1$documents
+ out1 <-prepDocuments(docs1, vocab1, meta1)
+ docs1<-out1$documents
+ vocab1<-out1$vocab
+ meta1 <-out1$meta
+ temp1<-NULL
+ 
+ 
+ 
+ #set.seed(01234)
+ devworkcontent <- stm(out1$documents, out1$vocab, K = 5,prevalence =~ AgeC , content =~ AgeC,
+                       data = out1$meta, init.type = "Spectral")
+ 
+#  devworkcontent.select <- selectModel(out1$documents, out1$vocab, K = 5,
+#                                prevalence =~ as.factor(AgeC) , data = out1$meta, seed = 8458159)
+#                                
 #  png("Labels-dev-use-for-work.png", width = 1200, height = 1000,res=160)
 #  #  
 #  plot.STM(devworkcontent, type = "labels", main= "Other Ways of youth using devices for work",cex = 0.5)
 #  
-#  dev.off()
+#  #dev.off()
 #  
-#   
-#  png("Perspectives-prev-dev-use-for-work.png", width = 1200, height = 1000,res=160)
-#  #  
-#  plot.STM(devworkcontent, type = "perspectives", topics = 5,main = "Other Ways of youth using devices for work")
-# 
-#  dev.off()
+  
+ #png("Perspectives-prev-dev-use-for-work.png", width = 1200, height = 1000,res=160)
+ #  
+ #plot.STM(devworkcontent, type = "perspectives", topics = 5,main = "Other Ways of youth using devices for work")
+
+ #dev.off()
+ 
+ 
+ 
+ prep <- estimateEffect(1:5 ~ AgeC , devworkcontent,
+                        meta = out1$meta, uncertainty = "Global")
+ #png("Contrast-covariate-dev-use-for-work.png", width = 1200, height = 800,res=100)
+ 
+ plot.estimateEffect(prep, covariate = "AgeC", topics = c(1,2,3),
+                     model = devworkcontent, method = "difference",
+                     cov.value1 = "31+", cov.value2 = "25-30",
+                     xlab = "More 25-30 ... More 31+",
+                     main = "Effect of Age on Vocab used",
+                     xlim = c(-.09, .1))
+ 
+ #dev.off()
+#  p<-cloud(devworkcontent, topic = 5, scale = c(2,.25),colors=brewer.pal(6,"Dark2"))
 #  
-#  
-#  
-#  prep <- estimateEffect(1:5 ~ AgeC , devworkcontent,
-#                         meta = out1$meta, uncertainty = "Global")
-#  png("Contrast-covariate-dev-use-for-work.png", width = 1200, height = 800,res=100)
-#  
-#  plot.estimateEffect(prep, covariate = "AgeC", topics = c(1,3,5),
-#                      model = devworkcontent, method = "difference",
-#                      cov.value1 = "25-30", cov.value2 = "31+",
-#                      xlab = "More 25-30 ... More 31+",
-#                      main = "Effect of Age on Vocab used",
-#                      xlim = c(-.1, .1))
-#  
-#  dev.off()
-# #  p<-cloud(devworkcontent, topic = 5, scale = c(2,.25),colors=brewer.pal(6,"Dark2"))
-# #  
-#  
+ 
 ###########"What.other.ways.you.use.the.Internet.for.work."###########################
  
 #  names(dot.tech.sm.work.full.dt) <- gsub("What.other.ways.you.use.the.Internet.for.work.", "intrnt.other.ways.for.work", names(dot.tech.sm.work.full.dt))
